@@ -1,4 +1,7 @@
 <script lang="ts">
+  const cardEmoji = "🎴";
+  const noOfCards = 1000;
+
   let cardIndex = 1;
   let cardData: Card;
 
@@ -63,9 +66,21 @@
     const response = await fetchCardIndex(randomNo);
     return response;
   }
+
+  $: cardEmojis = cardEmoji.repeat(noOfCards);
 </script>
 
 <h1>Scryfall Data</h1>
+
+<section class="mx-auto w-full">
+  <div class="flex flex-row">
+    {#each cardEmojis as emoji}
+      <span class="w-full">
+        <span class="absolute">{emoji}</span>
+      </span>
+    {/each}
+  </div>
+</section>
 
 <section class="mx-auto w-full max-w-prose overflow-x-auto">
   <!-- <section> -->
