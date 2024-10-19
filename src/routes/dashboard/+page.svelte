@@ -44,19 +44,6 @@
     cardData = json;
 
     return json;
-
-    // try {
-    //   const response = await fetch(url);
-    //   if (!response.ok) {
-    //     throw new Error(`Response status: ${response.status}`);
-    //   }
-    //
-    //   const json = await response.json();
-    //   console.log(json);
-    //   return json;
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   async function fetchCardRandom() {
@@ -72,7 +59,7 @@
 
 <h1>Scryfall Data</h1>
 
-<section class="mx-auto w-full">
+<section class="mx-auto h-8 w-full">
   <div class="flex flex-row">
     {#each cardEmojis as emoji}
       <span class="w-full">
@@ -83,7 +70,6 @@
 </section>
 
 <section class="mx-auto w-full max-w-prose overflow-x-auto">
-  <!-- <section> -->
   <!--   <h3>By Index</h3> -->
   <!---->
   <!--   {#await fetchCardIndex(1)} -->
@@ -95,66 +81,101 @@
   <!--     <p>error</p> -->
   <!--     <p>{error}</p> -->
   <!--   {/await} -->
-  <!-- </section> -->
+</section>
 
-  <section class="mx-auto max-w-max rounded border border-black bg-white px-4 py-2">
+<section class="section-style mx-auto w-full max-w-prose">
+  <hgroup class="mb-2">
     <h2
       id="heading-fetch-cards"
-      class="mb-2 text-2xl"
+      class="heading-size-2"
     >
       Fetch Cards
     </h2>
 
-    <form
-      id="fetch-by-index"
-      aria-labelledby="fetch-by-index"
-      on:submit={() => fetchCardIndex(cardIndex)}
-    >
-      <div>
-        <label for="card-index">
-          <span> Card Index </span>
-          <span class="text-red-500"> * </span>
-        </label>
-        <input
-          id="card-index"
-          name="card-index"
-          type="number"
-          min="1"
-          max="1000"
-          step="1"
-          bind:value={cardIndex}
-          required
-          class="w-18 rounded border pl-2"
-        />
-      </div>
+    <p class="text-minor">
+      <span>Choose range from 1 to 1000.</span>
+    </p>
+  </hgroup>
 
-      <button class="button">fetch card</button>
-    </form>
+  <form
+    id="fetch-by-index"
+    aria-labelledby="fetch-by-index"
+    on:submit|preventDefault={() => fetchCardIndex(cardIndex)}
+  >
+    <div class="flex flex-col">
+      <label for="card-index">
+        <span> Card Index </span>
+        <span class="text-red-500"> * </span>
+      </label>
 
-    <button
-      class="button"
-      on:click={() => fetchCardRandom()}>random card</button
-    >
-  </section>
+      <input
+        id="card-index"
+        name="card-index"
+        type="number"
+        min="1"
+        max="1000"
+        step="1"
+        bind:value={cardIndex}
+        required
+        class="w-18 rounded border pl-2"
+      />
+    </div>
 
-  <section>
-    {#if !cardData}
-      <p class="text-center text-sm italic">Load a card to view it's data.</p>
-    {:else}
-      <pre>{JSON.stringify(cardData)}</pre>
+    <button class="button-primary mt-2">fetch card</button>
+  </form>
+
+  <form
+    id="fetch-random"
+    on:submit|preventDefault={() => fetchCardRandom()}
+  >
+    <button class="button-secondary mt-2">random card</button>
+  </form>
+</section>
+
+<section class="section-style mx-auto mt-8 w-full max-w-prose">
+  <hgroup class="mb-2">
+    <h2 class="heading-size-2">Card Data</h2>
+
+    <p class="text-minor">
+      {#if !cardData}
+        Load a card to view it's data.
+      {:else}
+        View detailed card data.
+      {/if}
+    </p>
+  </hgroup>
+
+  {#if cardData}
+    <dl class="space-y-1">
       {#each Object.entries(cardData) as entry}
-        {entry}
-        <pre class="font-bold">{entry[0]}</pre>
-        <pre>{JSON.stringify(entry[1])}</pre>
+        <dt class="font-bold">{entry[0]}</dt>
+        <dd><pre>{JSON.stringify(entry[1])}</pre></dd>
       {/each}
-    {/if}
-  </section>
+    </dl>
+  {/if}
 </section>
 
 <style lang="postcss">
-  .button {
+  .button-primary {
     @apply bg-blue-900 hover:bg-blue-700 focus:bg-blue-700;
     @apply text-white;
     @apply max-w-max rounded px-2 py-1;
+  }
+
+  .button-secondary {
+    @apply bg-blue-100 hover:bg-blue-200 focus:bg-blue-200;
+    @apply max-w-max rounded px-2 py-1;
+  }
+
+  .section-style {
+    @apply rounded border border-black bg-gray-50 px-4 py-2;
+  }
+
+  .heading-size-2 {
+    @apply text-2xl;
+  }
+
+  .text-minor {
+    @apply text-sm italic text-gray-800;
   }
 </style>
