@@ -14,14 +14,23 @@ interface Card {
 const cards = dataJson as Card[];
 
 export const GET: RequestHandler = ({ url }) => {
-  const entryNo = Number(url.searchParams.get("number"));
+  const start = Number(url.searchParams.get("start"));
+  const end = Number(url.searchParams.get("end"));
 
-  if (isNaN(entryNo) || entryNo < 1 || entryNo > 1000) {
-    error(400, "Number must be in range 1-1000.");
+  if (isNaN(start) || isNaN(end)) {
+    error(400, "Must provide range start and end.");
   }
 
-  const card = cards[entryNo - 1];
-  // console.log(card);
+  if (start > end) {
+    error(400, "Start can't be greater than end.");
+  }
 
-  return json(card);
+  if (start < 1 || end > 1000) {
+    error(400, "Start and end must be in range 1 to 1000.");
+  }
+
+  // slice() extracts up to but not including end
+  const cardsRange = cards.slice(start - 1, end);
+
+  return json(cardsRange);
 };
