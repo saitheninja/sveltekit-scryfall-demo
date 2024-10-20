@@ -1,8 +1,26 @@
-<script>
+<script lang="ts">
+  import { email, jwt } from "$lib/local-storage";
+
   import Counter from "$lib/Counter.svelte";
 
   import welcome from "$lib/images/svelte-welcome.webp";
   import welcome_fallback from "$lib/images/svelte-welcome.png";
+
+  const checkJwtValid = (jwt: string) => {
+    console.log(jwt);
+    console.log("1");
+
+    if (!jwt) return false;
+    console.log("2");
+
+    if (jwt.length === 0) return false;
+    console.log("3");
+
+    if (jwt !== "loggedin") return false;
+    console.log("4");
+
+    return true;
+  };
 </script>
 
 <svelte:head>
@@ -36,6 +54,28 @@
   </h2>
 
   <Counter />
+</section>
+
+<section>
+  <p>{"jwt:"}{$jwt}</p>
+
+  {#if !checkJwtValid($jwt)}
+    <p>{"not logged in"}</p>
+  {:else}
+    <p>{"logged in"}</p>
+
+    <form
+      id="form-log-out"
+      on:submit|preventDefault={() => {
+        localStorage.clear();
+        location.reload();
+      }}
+    >
+      <button class="button-primary mx-auto max-w-max"> Log Out </button>
+    </form>
+
+    <slot />
+  {/if}
 </section>
 
 <style>

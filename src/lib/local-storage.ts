@@ -1,6 +1,6 @@
   import { writable } from "svelte/store";
 
-  const createLocalStore = <Type,>(key: string, startValue: Type) => {
+  const createLocalStorageEntry = <Type,>(key: string, startValue: Type) => {
     const { subscribe, set, update } = writable(startValue);
 
     return {
@@ -21,6 +21,6 @@
     };
   };
 
-  export const jwt = createLocalStore("jwt", "");
-  export const email = createLocalStore("email", "");
+  export const jwt = createLocalStorageEntry("jwt", "");
+  export const email = createLocalStorageEntry("email", "");
 

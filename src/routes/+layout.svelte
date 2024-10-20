@@ -1,10 +1,9 @@
-<script>
 <script lang="ts">
-  import Header from "$lib/Header.svelte";
+  import { onMount } from "svelte";
 
   import { email, jwt } from "$lib/local-storage";
 
-  import { onMount } from "svelte";
+  import Header from "$lib/Header.svelte";
 
   import "../app.css";
 
