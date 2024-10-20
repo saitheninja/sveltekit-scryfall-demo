@@ -2,9 +2,12 @@
   import { email, jwt } from "$lib/local-storage";
 
   import Counter from "$lib/Counter.svelte";
+  import LogInForm from "$lib/LogInForm.svelte";
 
   import welcome from "$lib/images/svelte-welcome.webp";
   import welcome_fallback from "$lib/images/svelte-welcome.png";
+
+  export let form;
 
   const checkJwtValid = (jwt: string) => {
     console.log(jwt);
@@ -61,6 +64,8 @@
 
   {#if !checkJwtValid($jwt)}
     <p>{"not logged in"}</p>
+
+    <LogInForm {form} />
   {:else}
     <p>{"logged in"}</p>
 
