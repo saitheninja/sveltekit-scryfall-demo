@@ -213,28 +213,3 @@
     {/each}
   {/if}
 </section>
-
-<style lang="postcss">
-  .button-primary {
-    @apply bg-blue-900 hover:bg-blue-700 focus:bg-blue-700;
-    @apply text-white;
-    @apply max-w-max rounded px-2 py-1;
-  }
-
-  .button-secondary {
-    @apply bg-blue-100 hover:bg-blue-200 focus:bg-blue-200;
-    @apply max-w-max rounded px-2 py-1;
-  }
-
-  .section-style {
-    @apply rounded border border-black bg-gray-50 px-4 py-2;
-  }
-
-  .heading-size-2 {
-    @apply text-2xl;
-  }
-
-  .text-minor {
-    @apply text-sm italic text-gray-800;
-  }
-</style>
