@@ -1,0 +1,13 @@
+services:
+  scryfall:
+    image: node:20.17.0
+    restart: unless-stopped
+    command: sh -c "npm i && npm run dev"
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    expose:
+      - "5173"
+
+volumes:
+  scryfall:
