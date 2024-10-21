@@ -149,6 +149,14 @@
   $: pieChartData = makePieChartData(cardsData);
 </script>
 
+<svelte:head>
+  <title>Scryfall</title>
+  <meta
+    name="description"
+    content="Examine some data from Scryfall"
+  />
+</svelte:head>
+
 <h1 class="heading-style-1 mb-4 text-center">Scryfall Data</h1>
 
 <section class="mx-auto w-full max-w-prose overflow-x-auto">
