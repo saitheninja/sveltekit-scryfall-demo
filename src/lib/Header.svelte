@@ -2,8 +2,15 @@
   import { page } from "$app/stores";
 </script>
 
-<header>
-  <nav>
+<header class="mb-4">
+  <a
+    class="skip-to-main-link"
+    href="#main"
+  >
+    skip to main
+  </a>
+
+  <nav class="max-w-max mx-auto">
     <svg
       viewBox="0 0 2 3"
       aria-hidden="true"
@@ -79,7 +86,7 @@
     border-top: var(--size) solid var(--color-theme-1);
   }
 
-  nav a {
+  a {
     display: flex;
     height: 100%;
     align-items: center;
@@ -95,5 +102,17 @@
 
   a:hover {
     color: var(--color-theme-1);
+  }
+
+  .skip-to-main-link {
+    @apply absolute bg-gray-50 px-4 py-3;
+    @apply h-fit;
+
+    transform: translateY(-140%);
+    transition: transform 0.05s;
+  }
+
+  .skip-to-main-link:focus {
+    transform: translateY(0%);
   }
 </style>
