@@ -1,10 +1,15 @@
 <script lang="ts">
+  import ChartBars from "$lib/ChartBars.svelte";
+  import ChartPies from "$lib/ChartPies.svelte";
+
+  import type { ChartEntry } from "$lib/charts";
+
   const rangeMin = 1;
   const rangeMax = 1000;
   const cardEmoji = "🎴";
 
   let rangeStart = 1;
-  let rangeEnd = 1000;
+  let rangeEnd = 10;
 
   let cardEmojis: string[] = [];
   let cardsData: Card[] = [];
@@ -17,6 +22,7 @@
     scryfall_uri: URL;
     uri: URL;
     // gameplay fields
+    cmc: number;
     color_identity: Colors[];
     legalities: "legal" | "not_legal" | "restricted" | "banned";
     name: string;
@@ -75,11 +81,75 @@
     return emojis;
   }
 
+  function makeBarChartData(cards: Card[]) {
+    let cmcsTally: { cmc: number; tally: number }[] = [];
+
+    cards.forEach((card) => {
+      const index = cmcsTally.findIndex(({ cmc }) => cmc === card.cmc);
+
+      if (index === -1) {
+        cmcsTally.push({ cmc: card.cmc, tally: 1 });
+      } else {
+        cmcsTally[index].tally++;
+      }
+    });
+
+    cmcsTally.sort((a, b) => a.cmc - b.cmc);
+
+    let barChartData: ChartEntry[] = [];
+    cmcsTally.forEach((entry) => {
+      barChartData.push({ name: entry.cmc.toString(), value: entry.tally });
+    });
+
+    return barChartData;
+  }
+
+  function makePieChartData(cards: Card[]) {
+    let colorTally: { color: Colors; tally: number }[] = [];
+
+    // process raw data
+    cards.forEach((card) => {
+      card.color_identity.forEach((colorIdentity) => {
+        const index = colorTally.findIndex(({ color }) => color === colorIdentity);
+
+        // if index does not exist create it and start tally, else add to existing tally
+        if (index === -1) {
+          colorTally.push({ color: colorIdentity, tally: 1 });
+        } else {
+          colorTally[index].tally++;
+        }
+      });
+    });
+
+    // sort colors alphabetically
+    colorTally.sort((a, b) => {
+      if (a.color < b.color) {
+        return -1;
+      }
+
+      if (a.color > b.color) {
+        return 1;
+      }
+
+      return 0;
+    });
+
+    // convert to ChartEntry format
+    let pieChartData: ChartEntry[] = [];
+    colorTally.forEach((entry) => {
+      pieChartData.push({ name: entry.color.toString(), value: entry.tally });
+    });
+
+    return pieChartData;
+  }
+
   $: range = rangeEnd - rangeStart + 1;
   $: cardEmojis = makeEmojiArray(range);
+  $: barChartData = makeBarChartData(cardsData);
+  $: pieChartData = makePieChartData(cardsData);
 </script>
 
-<h1>Scryfall Data</h1>
+<h1 class="heading-style-1 mb-4 text-center">Scryfall Data</h1>
 
 <section class="mx-auto w-full max-w-prose overflow-x-auto">
   <!--   <h3>By Index</h3> -->
@@ -100,30 +170,37 @@
     id="heading-fetch-cards"
     class="mb-2"
   >
-    <h2 class="heading-size-2">Fetch Cards</h2>
+    <h2 class="heading-style-2">Fetch Cards</h2>
 
     <p class="text-minor">
       <span>Choose range from 1 to 1000.</span>
     </p>
   </hgroup>
 
-  <section class="mx-auto w-full">
-    <p class="text-minor">
-      {rangeEnd - rangeStart + 1} cards selected
-    </p>
-
-    <div class="flex h-6 flex-row pr-4">
-      {#each cardEmojis as emoji, i}
-        <span class="w-full">
-          <p
-            id="emoji-{i}"
-            class="absolute"
-          >
-            {emoji}
-          </p>
-        </span>
-      {/each}
+  <section class="mx-auto w-full pb-4 pt-2">
+    <div class="w-full rounded border">
+      <div class="flex h-6 flex-row pr-6">
+        {#each cardEmojis as emoji, i}
+          <span class="w-full">
+            <p
+              id="emoji-{i}"
+              class="absolute"
+            >
+              {emoji}
+            </p>
+          </span>
+        {/each}
+      </div>
     </div>
+
+    <p class="text-minor text-center">
+      {range}
+      {#if range === 1}
+        card selected
+      {:else}
+        cards selected
+      {/if}
+    </p>
   </section>
 
   <form
@@ -182,9 +259,12 @@
   </form>
 </section>
 
-<section class="section-style mx-auto mt-8 w-full max-w-prose">
+<section
+  id="cards-data"
+  class="section-style mx-auto mt-8 w-full max-w-prose"
+>
   <hgroup class="mb-2">
-    <h2 class="heading-size-2">Cards Data</h2>
+    <h2 class="heading-style-2">Cards Data</h2>
 
     <p class="text-minor">
       {#if !cardsData.length}
@@ -212,4 +292,27 @@
       </details>
     {/each}
   {/if}
+</section>
+
+<section
+  id="cmc-chart"
+  class="section-style mx-auto mt-8 w-full max-w-prose"
+>
+  <h2 class="heading-style-2">Converted Mana Cost Tally</h2>
+
+  <!-- <p>{JSON.stringify(barChartData)}</p> -->
+  <ChartBars data={barChartData} />
+</section>
+
+<section
+  id="color-identity-chart"
+  class="section-style mx-auto mt-8 w-full max-w-prose"
+>
+  <hgroup>
+    <h2 class="heading-style-2">Color Identity Tally</h2>
+    <p class="text-minor">A card can have more than one color in its color identity.</p>
+  </hgroup>
+
+  <!-- <p>{JSON.stringify(pieChartData)}</p> -->
+  <ChartPies data={pieChartData} />
 </section>
