@@ -43,30 +43,9 @@
     overflow-x: auto;
     color: var(--color-text);
   }
-
-  .text-column {
-    display: flex;
-    max-width: 48rem;
-    flex: 0.6;
-    flex-direction: column;
-    justify-content: center;
-    margin: 0 auto;
-  }
-
-  .visually-hidden {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: auto;
-    margin: 0;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-    white-space: nowrap;
-  }
 }
 
-/* buttons */
+/* inputs */
 @layer components {
   .button-primary {
     @apply bg-blue-900 hover:bg-blue-700 focus:bg-blue-700;
@@ -79,10 +58,48 @@
     @apply max-w-max rounded px-2 py-1;
   }
 
-  .section-style {
-    @apply rounded border border-black bg-gray-50 px-4 py-2;
+  button:disabled {
+    @apply bg-gray-400;
+    @apply text-gray-300;
+    @apply line-through;
   }
 
+  input {
+    @apply rounded border border-gray-200;
+  }
+
+  input[type="text"] {
+    @apply px-2;
+  }
+  input[type="number"] {
+    @apply pl-2;
+  }
+
+  input:focus:invalid,
+  input:user-invalid {
+    @apply bg-red-50;
+  }
+
+  input:focus:valid,
+  input:user-valid {
+    @apply bg-green-50;
+  }
+
+  /* add asterisk to labels with required input */
+  label:has(+ input:required)::after {
+    content: " *";
+
+    @apply text-red-500;
+  }
+}
+
+/* section */
+@layer components {
+  .section-style {
+    @apply px-4 py-2;
+    @apply rounded border border-gray-600;
+    @apply bg-gray-50;
+  }
 }
 
 /* text */
@@ -98,6 +115,6 @@
   }
 
   .text-minor {
-    @apply text-sm italic text-gray-800;
+    @apply text-sm italic text-gray-600;
   }
 }

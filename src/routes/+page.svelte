@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { jwt } from "$lib/local-storage";
+  import { email, jwt } from "$lib/local-storage";
 
   import LogInForm from "$lib/LogInForm.svelte";
 
@@ -22,14 +22,19 @@
   />
 </svelte:head>
 
-<section>
-  <h1 class="heading-size-1">Log In</h1>
+<h1 class="heading-style-1 mb-4 text-center">Welcome!</h1>
 
+<section class="section-style mx-auto max-w-max">
   {#if !checkJwtValid($jwt)}
     <LogInForm {form} />
   {:else}
+    <p class="mb-2">You are logged in as {$email}.</p>
+
+    <p class="mb-2">You can now access the <a href="/scryfall">Scryfall data page</a>.</p>
+
     <form
       id="form-log-out"
+      class="mx-auto max-w-max"
       on:submit|preventDefault={() => {
         localStorage.clear();
         location.reload();
@@ -37,7 +42,5 @@
     >
       <button class="button-primary mx-auto max-w-max"> Log Out </button>
     </form>
-
-    <slot />
   {/if}
 </section>

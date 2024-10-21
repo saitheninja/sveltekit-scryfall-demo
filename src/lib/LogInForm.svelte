@@ -21,15 +21,16 @@
 </script>
 
 {#if !form?.success}
-  <h1 class="mb-12">Log In</h1>
-
-  <div class="mx-auto w-full max-w-sm p-4">
-    <h2
-      id="heading-log-in"
-      class="mb-4 text-center"
-    >
-      Log In
-    </h2>
+  <div class="mx-auto w-full max-w-prose p-4">
+    <hgroup class="mb-4">
+      <h2
+        id="heading-log-in"
+        class="heading-style-2"
+      >
+        Log In
+      </h2>
+      <p class="text-minor">"test@example.com" "password123"</p>
+    </hgroup>
 
     <form
       id="form-log-in"
@@ -39,11 +40,8 @@
       action="?/login"
       use:enhance={submitFn}
     >
-      <div>
-        <label for="log-in-email">
-          <span> Email </span>
-          <span class="text-red-500"> * </span>
-        </label>
+      <div class="flex flex-col">
+        <label for="log-in-email">Email</label>
 
         <input
           type="email"
@@ -54,11 +52,8 @@
         />
       </div>
 
-      <div>
-        <label for="log-in-password">
-          <span> Password </span>
-          <span class="text-red-500"> * </span>
-        </label>
+      <div class="flex flex-col">
+        <label for="log-in-password">Password</label>
 
         <input
           type="password"
@@ -69,10 +64,10 @@
         />
       </div>
 
-      <div class="mx-auto my-2 max-w-max">
+      <div class="mx-auto pt-4 max-w-max">
         <button
           id="log-in-submit"
-          class="button"
+          class="button-primary"
         >
           Log In
         </button>
