@@ -2,6 +2,8 @@
   import type { SubmitFunction } from "@sveltejs/kit";
 
   import { enhance } from "$app/forms";
+  import { goto } from "$app/navigation";
+
   import { email, jwt } from "$lib/local-storage";
 
   export let form;
@@ -16,6 +18,9 @@
       }
 
       await update();
+
+      alert("Login sucessful. Redirecting to data page.");
+      goto("/scryfall");
     };
   };
 </script>
@@ -64,7 +69,7 @@
         />
       </div>
 
-      <div class="mx-auto pt-4 max-w-max">
+      <div class="mx-auto max-w-max pt-4">
         <button
           id="log-in-submit"
           class="button-primary"
