@@ -16,6 +16,7 @@
 
   let rangeStart = 1;
   let rangeEnd = 10;
+  let isLoading = false;
 
   let cardEmojis: string[] = [];
   let cardsData: Card[] = [];
@@ -47,6 +48,8 @@
   }
 
   async function fetchCardRange(start: number, end: number) {
+    isLoading = true;
+
     const response = await fetch(
       "/data?" +
         new URLSearchParams({
@@ -64,17 +67,16 @@
     }
 
     cardsData = json;
-
-    return json;
+    isLoading = false;
   }
 
   async function fetchRandomRange() {
-    const randomNo = Math.floor(Math.random() * 1000);
-    rangeStart = randomNo;
-    rangeEnd = randomNo;
+    isLoading = true;
 
-    const response = await fetchCardRange(randomNo, randomNo);
-    return response;
+    rangeStart = Math.floor(Math.random() * rangeMax);
+    rangeEnd = Math.floor(Math.random() * (rangeMax - rangeStart)) + rangeStart;
+
+    await fetchCardRange(rangeStart, rangeEnd);
   }
 
   function makeEmojiArray(length: number) {
@@ -172,20 +174,6 @@
 
 <h1 class="heading-style-1 mb-4 text-center">Scryfall Data</h1>
 
-<section class="mx-auto w-full max-w-prose overflow-x-auto">
-  <!--   <h3>By Index</h3> -->
-  <!---->
-  <!--   {#await fetchCardIndex(1)} -->
-  <!--     <p>loading...</p> -->
-  <!--   {:then card} -->
-  <!--     <p>{card}</p> -->
-  <!--     <pre>{JSON.stringify(card)}</pre> -->
-  <!--   {:catch error} -->
-  <!--     <p>error</p> -->
-  <!--     <p>{error}</p> -->
-  <!--   {/await} -->
-</section>
-
 {#if $jwt !== "loggedin"}
   <section class="section-style mx-auto max-w-prose text-center">
     <p>You are not logged in!</p>
@@ -268,6 +256,7 @@
 
       <div class="flex flex-row">
         <button
+          disabled={isLoading}
           class="button-primary mx-auto mt-2">fetch chosen range</button
         >
       </div>
@@ -279,9 +268,15 @@
       class="mx-auto mb-2 max-w-max"
     >
       <button
+        disabled={isLoading}
         class="button-secondary mt-2">fetch random range</button
       >
     </form>
+
+    {#if isLoading}
+      <p class="text-minor text-center">loading...</p>
+    {/if}
+  </section>
 
   <section
     id="cards-data"
