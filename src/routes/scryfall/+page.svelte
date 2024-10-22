@@ -1,6 +1,4 @@
 <script lang="ts">
-  import type { ChartEntry } from "$lib/interfaces";
-
   import { onMount } from "svelte";
 
   import { goto } from "$app/navigation";
@@ -9,6 +7,8 @@
 
   import ChartBars from "$lib/ChartBars.svelte";
   import ChartPies from "$lib/ChartPies.svelte";
+
+  import type { ChartEntry, Card, Colors } from "$lib/interfaces";
 
   const rangeMin = 1;
   const rangeMax = 1000;
@@ -20,32 +20,6 @@
 
   let cardEmojis: string[] = [];
   let cardsData: Card[] = [];
-
-  // https://scryfall.com/docs/api/cards
-  interface Card {
-    // core card fields
-    object: "card"; // always "card"
-    id: string;
-    scryfall_uri: URL;
-    uri: URL;
-    // gameplay fields
-    cmc: number;
-    color_identity: Colors[];
-    legalities: "legal" | "not_legal" | "restricted" | "banned";
-    name: string;
-    type_line: string;
-    // print fields
-    // card face objects
-    // related card objects
-  }
-  interface Colors {
-    color:
-      | "W" // white
-      | "U" // blue
-      | "B" // black
-      | "R" // red
-      | "G"; // green
-  }
 
   async function fetchCardRange(start: number, end: number) {
     isLoading = true;

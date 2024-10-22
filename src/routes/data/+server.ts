@@ -4,12 +4,7 @@ import { error } from "@sveltejs/kit";
 import { json } from "@sveltejs/kit";
 
 import type { RequestHandler } from "./$types";
-
-// https://scryfall.com/docs/api/cards
-interface Card {
-  object: "card"; // always "card"
-  id: string;
-}
+import type { Card } from "$lib/interfaces";
 
 const cards = dataJson as Card[];
 
