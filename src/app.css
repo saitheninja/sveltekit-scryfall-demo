@@ -74,7 +74,9 @@
     @apply rounded border border-gray-200;
   }
 
-  input[type="text"] {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
     @apply px-2;
   }
   input[type="number"] {

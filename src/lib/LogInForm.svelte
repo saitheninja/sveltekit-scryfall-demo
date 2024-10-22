@@ -10,17 +10,14 @@
 
   const submitFn: SubmitFunction = () => {
     return async ({ result, update }) => {
-      console.log(result);
-
       if (result.type === "success") {
         $email = result.data?.email?.toString() ?? "";
         $jwt = result.data?.jwt?.toString() ?? "";
+        // alert("Login sucessful. Redirecting to data page.");
+        await goto("/scryfall");
+      } else {
+        await update();
       }
-
-      await update();
-
-      alert("Login sucessful. Redirecting to data page.");
-      goto("/scryfall");
     };
   };
 </script>
@@ -80,8 +77,8 @@
     </form>
 
     {#if form && !form.success}
-      <div class="mt-4 text-center italic">
-        <h3>Error!</h3>
+      <div class="mt-8 italic text-red-500">
+        <h2 class="heading-style-2">Error!</h2>
 
         <p>
           {form?.message}
@@ -97,23 +94,3 @@
   </div>
 {/if}
 
-<!-- <style>
-  form:has(:invalid) {
-    background-color: red;
-  }
-
-  input:required:invalid {
-    border-width: 2px;
-    border-color: red;
-  }
-
-  input:required:valid {
-    border-width: 2px;
-    border-color: green;
-  }
-
-  label:has(+ input:required):after {
-    content: " *";
-    color: red;
-  }
-</style> -->

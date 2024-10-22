@@ -3,10 +3,11 @@
 
   import { goto } from "$app/navigation";
 
-  import { jwt } from "$lib/local-storage";
+  import { email, jwt } from "$lib/local-storage";
 
   import ChartBars from "$lib/ChartBars.svelte";
   import ChartPies from "$lib/ChartPies.svelte";
+  import LogOutForm from "$lib/LogOutForm.svelte";
 
   import type { ChartEntry, Card, Colors } from "$lib/interfaces";
 
@@ -130,10 +131,10 @@
   $: barChartData = makeBarChartData(cardsData);
   $: pieChartData = makePieChartData(cardsData);
 
-  onMount(() => {
+  onMount(async () => {
     if ($jwt !== "loggedin") {
-      alert("You are not logged in. Redirecting to home page.");
-      goto("/");
+      // alert("You are not logged in. Redirecting to home page.");
+      await goto("/");
     }
   });
 </script>
@@ -154,159 +155,197 @@
     <p>Redirecting to home page.</p>
   </section>
 {:else}
-  <section class="section-style mx-auto w-full max-w-prose">
-    <hgroup
-      id="heading-fetch-cards"
-      class="mb-2"
-    >
-      <h2 class="heading-style-2">Fetch Cards</h2>
-      <p class="text-minor">Choose range from 1 to 1000</p>
-    </hgroup>
-
-    <section class="mx-auto w-full pb-4 pt-2">
-      <div class="w-full rounded border">
-        <div class="flex h-6 flex-row pr-6">
-          {#each cardEmojis as emoji, i}
-            <span class="w-full">
-              <p
-                id="emoji-{i}"
-                class="absolute"
-              >
-                {emoji}
-              </p>
-            </span>
-          {/each}
-        </div>
-      </div>
-
-      <p class="text-minor text-center">
-        {range}
-        {#if range === 1}
-          card selected
-        {:else}
-          cards selected
-        {/if}
-      </p>
-    </section>
-
-    <form
-      id="form-fetch-range"
-      aria-labelledby="heading-fetch-cards"
-      on:submit|preventDefault={() => fetchCardRange(rangeStart, rangeEnd)}
-    >
-      <div class="flex flex-row justify-between">
-        <div class="flex flex-col">
-          <label for="range-start">Start</label>
-
-          <input
-            id="range-start"
-            name="range-start"
-            type="number"
-            min={rangeMin}
-            max={rangeEnd}
-            step="1"
-            bind:value={rangeStart}
-            required
-            class="w-18"
-          />
-        </div>
-
-        <div class="flex flex-col">
-          <label for="range-end">End</label>
-
-          <input
-            id="range-end"
-            name="range-end"
-            type="number"
-            min={rangeStart}
-            max={rangeMax}
-            step="1"
-            bind:value={rangeEnd}
-            required
-            class="w-18"
-          />
-        </div>
-      </div>
-
-      <div class="flex flex-row">
-        <button
-          disabled={isLoading}
-          class="button-primary mx-auto mt-2">fetch chosen range</button
-        >
-      </div>
-    </form>
-
-    <form
-      id="form-fetch-random"
-      on:submit|preventDefault={() => fetchRandomRange()}
-      class="mx-auto mb-2 max-w-max"
-    >
-      <button
-        disabled={isLoading}
-        class="button-secondary mt-2">fetch random range</button
+  <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+    <div class="space-y-4">
+      <section
+        id="fetch-cards"
+        class="section-style mx-auto w-full max-w-prose"
       >
-    </form>
+        <hgroup
+          id="heading-fetch-cards"
+          class="mb-2"
+        >
+          <h2 class="heading-style-2">Account</h2>
+          <p class="text-minor">You are logged in as {$email}</p>
+        </hgroup>
 
-    {#if isLoading}
-      <p class="text-minor text-center">loading...</p>
-    {/if}
-  </section>
+        <div class="mx-auto mt-4 max-w-max">
+          <LogOutForm />
+        </div>
+      </section>
 
-  <section
-    id="cards-data"
-    class="section-style mx-auto mt-8 w-full max-w-prose"
-  >
-    <hgroup class="mb-1">
-      <h2 class="heading-style-2">Cards Data</h2>
-      <p class="text-minor">View detailed card data</p>
-    </hgroup>
+      <section
+        id="fetch-cards"
+        class="section-style mx-auto w-full max-w-prose"
+      >
+        <hgroup
+          id="heading-fetch-cards"
+          class="mb-2"
+        >
+          <h2 class="heading-style-2">Fetch Cards</h2>
+          <p class="text-minor">Choose range from 1 to 1000</p>
+        </hgroup>
 
-    {#if cardsData.length}
-      {#each cardsData as card, i}
-        <details class="space-y-2">
-          <summary>
-            {rangeStart + i}
-            {card.name}
-          </summary>
+        <section class="mx-auto w-full">
+          <div class="w-full rounded border">
+            <div class="flex h-6 flex-row pr-6">
+              {#each cardEmojis as emoji, i}
+                <span class="w-full">
+                  <p
+                    id="emoji-{i}"
+                    class="absolute"
+                  >
+                    {emoji}
+                  </p>
+                </span>
+              {/each}
+            </div>
+          </div>
 
-          <dl class="space-y-1">
-            {#each Object.entries(card) as entry}
-              <dt class="font-bold">{entry[0]}</dt>
-              <dd><pre>{JSON.stringify(entry[1])}</pre></dd>
+          <p class="text-minor text-center">
+            {range}
+            {#if range === 1}
+              card selected
+            {:else}
+              cards selected
+            {/if}
+          </p>
+        </section>
+
+        <form
+          id="form-fetch-range"
+          aria-labelledby="heading-fetch-cards"
+          on:submit|preventDefault={() => fetchCardRange(rangeStart, rangeEnd)}
+        >
+          <div class="flex flex-row justify-between">
+            <div class="flex flex-col">
+              <label for="range-start">Start</label>
+
+              <input
+                id="range-start"
+                name="range-start"
+                type="number"
+                min={rangeMin}
+                max={rangeEnd}
+                step="1"
+                bind:value={rangeStart}
+                required
+                class="w-18"
+              />
+            </div>
+
+            <div class="flex flex-col">
+              <label for="range-end">End</label>
+
+              <input
+                id="range-end"
+                name="range-end"
+                type="number"
+                min={rangeStart}
+                max={rangeMax}
+                step="1"
+                bind:value={rangeEnd}
+                required
+                class="w-18"
+              />
+            </div>
+          </div>
+
+          <div class="flex flex-row">
+            <button
+              disabled={isLoading}
+              class="button-primary mx-auto mt-2">fetch chosen range</button
+            >
+          </div>
+        </form>
+
+        <form
+          id="form-fetch-random"
+          on:submit|preventDefault={() => fetchRandomRange()}
+          class="mx-auto mb-2 max-w-max"
+        >
+          <button
+            disabled={isLoading}
+            class="button-secondary mt-2">fetch random range</button
+          >
+        </form>
+
+        {#if isLoading}
+          <p class="text-minor text-center">loading...</p>
+        {/if}
+      </section>
+
+      <section
+        id="cards-data"
+        class="section-style mx-auto w-full max-w-prose"
+      >
+        <hgroup class="mb-1">
+          <h2 class="heading-style-2">Cards Data</h2>
+          <p class="text-minor">View detailed card data</p>
+        </hgroup>
+
+        {#if cardsData.length}
+          <details>
+            <summary class="my-2">
+              {cardsData.length}
+              {#if cardsData.length === 1}
+                card
+              {:else}
+                cards
+              {/if}
+            </summary>
+
+            {#each cardsData as card, i}
+              <details class="space-y-2">
+                <summary>
+                  {rangeStart + i}
+                  {card.name}
+                </summary>
+
+                <dl class="space-y-1">
+                  {#each Object.entries(card) as entry}
+                    <dt class="font-bold">{entry[0]}</dt>
+                    <dd><pre>{JSON.stringify(entry[1])}</pre></dd>
+                  {/each}
+                </dl>
+              </details>
             {/each}
-          </dl>
-        </details>
-      {/each}
-    {/if}
-  </section>
+          </details>
+        {/if}
+      </section>
+    </div>
 
-  <section
-    id="cmc-chart"
-    class="section-style mx-auto mt-8 w-full max-w-prose"
-  >
-    <hgroup class="mb-1">
-      <h2 class="heading-style-2">Converted Mana Cost Tally</h2>
-      <p class="text-minor">A card has one converted mana cost</p>
-    </hgroup>
+    <div class="space-y-4">
+      <section
+        id="cmc-chart"
+        class="section-style mx-auto w-full max-w-prose"
+      >
+        <hgroup class="mb-1">
+          <h2 class="heading-style-2">Converted Mana Cost Tally</h2>
+          <p class="text-minor">A card has one converted mana cost</p>
+        </hgroup>
 
-    {#if barChartData.length}
-      <ChartBars data={barChartData} />
-    {/if}
-  </section>
+        {#if barChartData.length}
+          <ChartBars data={barChartData} />
+        {/if}
+      </section>
 
-  <section
-    id="color-identity-chart"
-    class="section-style mx-auto mt-8 w-full max-w-prose"
-  >
-    <hgroup class="mb-1">
-      <h2 class="heading-style-2">Color Identity Tally</h2>
-      <p class="text-minor">A card can have more than one color in its color identity</p>
-    </hgroup>
+      <section
+        id="color-identity-chart"
+        class="section-style mx-auto w-full max-w-prose"
+      >
+        <hgroup class="mb-1">
+          <h2 class="heading-style-2">Color Identity Tally</h2>
+          <p class="text-minor">A card can have more than one color in its color identity</p>
+        </hgroup>
 
-    {#if pieChartData.length}
-      <div class="mx-auto my-4 max-w-max">
-        <ChartPies data={pieChartData} />
-      </div>
-    {/if}
-  </section>
+        {#if pieChartData.length}
+          <div class="mx-auto my-4 max-w-max">
+            <ChartPies data={pieChartData} />
+          </div>
+        {/if}
+      </section>
+
+    </div>
+  </div>
 {/if}

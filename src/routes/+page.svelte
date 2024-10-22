@@ -2,6 +2,7 @@
   import { email, jwt } from "$lib/local-storage";
 
   import LogInForm from "$lib/LogInForm.svelte";
+  import LogOutForm from "$lib/LogOutForm.svelte";
 
   export let form;
 
@@ -28,19 +29,14 @@
   {#if !checkJwtValid($jwt)}
     <LogInForm {form} />
   {:else}
-    <p class="mb-2">You are logged in as {$email}.</p>
+    <p>You are logged in as {$email}.</p>
+    <p class="mb-4">
+      You can now access the <a
+        class="underline"
+        href="/scryfall">Scryfall data page</a
+      >.
+    </p>
 
-    <p class="mb-2">You can now access the <a href="/scryfall">Scryfall data page</a>.</p>
-
-    <form
-      id="form-log-out"
-      class="mx-auto max-w-max"
-      on:submit|preventDefault={() => {
-        localStorage.clear();
-        location.reload();
-      }}
-    >
-      <button class="button-primary mx-auto max-w-max"> Log Out </button>
-    </form>
+    <LogOutForm />
   {/if}
 </section>
