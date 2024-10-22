@@ -51,17 +51,23 @@
     @apply bg-blue-900 hover:bg-blue-700 focus:bg-blue-700;
     @apply text-white;
     @apply max-w-max rounded px-2 py-1;
+    @apply font-bold;
   }
 
   .button-secondary {
     @apply bg-blue-100 hover:bg-blue-200 focus:bg-blue-200;
     @apply max-w-max rounded px-2 py-1;
+    @apply font-bold;
+  }
+
+  button:active {
+    @apply bg-blue-100;
   }
 
   button:disabled {
-    @apply bg-gray-400;
+    @apply bg-gray-400 hover:bg-gray-400;
     @apply text-gray-300;
-    @apply line-through;
+    @apply italic;
   }
 
   input {

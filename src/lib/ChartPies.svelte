@@ -6,7 +6,7 @@
   export let data: ChartEntry[];
 
   // chart dimensions
-  const width = 400;
+  const width = 500;
   const height = Math.min(width, 500);
   const radius = Math.min(width, height) / 2;
   const innerRadius = radius * 0.5;
@@ -17,7 +17,7 @@
     .pie<ChartEntry>()
     .sort(null)
     .value((d) => d.value)
-    .padAngle((1 / radius) * 2);
+    .padAngle((1 / radius) * 8);
 
   const arcGenerator = d3
     .arc<d3.PieArcDatum<ChartEntry>>()
@@ -29,13 +29,7 @@
     .innerRadius(labelRadius)
     .outerRadius(labelRadius);
 
-  // const colorGenerator = d3
-  //   .scaleOrdinal()
-  //   .domain(data.map((d) => d.name))
-  //   .range(
-  //     d3.quantize((t) => d3.interpolatePlasma(t * 0.5 + 0.1), data.length),
-  //   );
-
+  // sampled colours
   const colorGenerator = (name: string) => {
     if (name === "W") return "#FCFAD4"; // white
     if (name === "U") return "#A9DFF9"; // blue
@@ -77,6 +71,8 @@
       <path
         {d}
         {fill}
+        stroke="#000"
+        stroke-width={1}
       />
     {/each}
   </g>
@@ -84,35 +80,20 @@
   <g>
     <!-- draw labels after, so that they aren't covered up -->
     {#each arcs as { centroid, name, value }}
-      <!-- <text -->
-      <!--   x={centroid[0]} -->
-      <!--   y={centroid[1]} -->
-      <!--   text-anchor="middle" -->
-      <!--   class="stroke-white stroke-2 font-bold" -->
-      <!-- > -->
-      <!--   {name} -->
-      <!-- </text> -->
       <text
         x={centroid[0]}
         y={centroid[1]}
         text-anchor="middle"
-        class="font-bold"
+        class="font-bold text-sm"
       >
         {name}
       </text>
 
-      <!-- <text -->
-      <!--   x={centroid[0]} -->
-      <!--   y={centroid[1] + 20} -->
-      <!--   text-anchor="middle" -->
-      <!--   class="stroke-white stroke-2" -->
-      <!-- > -->
-      <!--   {value.toLocaleString()} -->
-      <!-- </text> -->
       <text
         x={centroid[0]}
-        y={centroid[1] + 20}
+        y={centroid[1] + 16}
         text-anchor="middle"
+        class="text-sm"
       >
         {value.toLocaleString()}
       </text>

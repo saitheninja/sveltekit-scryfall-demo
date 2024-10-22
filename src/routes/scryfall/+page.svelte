@@ -179,10 +179,7 @@
     class="mb-2"
   >
     <h2 class="heading-style-2">Fetch Cards</h2>
-
-    <p class="text-minor">
-      <span>Choose range from 1 to 1000.</span>
-    </p>
+    <p class="text-minor">Choose range from 1 to 1000</p>
   </hgroup>
 
   <section class="mx-auto w-full pb-4 pt-2">
@@ -218,10 +215,7 @@
   >
     <div class="flex flex-row justify-between">
       <div class="flex flex-col">
-        <label for="range-start">
-          <span> Range Start </span>
-          <span class="text-red-500"> * </span>
-        </label>
+        <label for="range-start">Start</label>
 
         <input
           id="range-start"
@@ -232,15 +226,12 @@
           step="1"
           bind:value={rangeStart}
           required
-          class="w-18 rounded border pl-2"
+          class="w-18"
         />
       </div>
 
       <div class="flex flex-col">
-        <label for="range-end">
-          <span> Range End </span>
-          <span class="text-red-500"> * </span>
-        </label>
+        <label for="range-end">End</label>
 
         <input
           id="range-end"
@@ -251,17 +242,20 @@
           step="1"
           bind:value={rangeEnd}
           required
-          class="w-18 rounded border pl-2"
+          class="w-18"
         />
       </div>
     </div>
 
-    <button class="button-primary mt-2">fetch chosen range</button>
+    <div class="flex flex-row">
+      <button class="button-primary mx-auto mt-2">fetch chosen range</button>
+    </div>
   </form>
 
   <form
     id="form-fetch-random"
     on:submit|preventDefault={() => fetchRandomRange()}
+    class="mx-auto mb-2 max-w-max"
   >
     <button class="button-secondary mt-2">fetch random range</button>
   </form>
@@ -271,16 +265,9 @@
   id="cards-data"
   class="section-style mx-auto mt-8 w-full max-w-prose"
 >
-  <hgroup class="mb-2">
+  <hgroup class="mb-1">
     <h2 class="heading-style-2">Cards Data</h2>
-
-    <p class="text-minor">
-      {#if !cardsData.length}
-        Load cards to view data.
-      {:else}
-        View detailed card data.
-      {/if}
-    </p>
+    <p class="text-minor">View detailed card data</p>
   </hgroup>
 
   {#if cardsData.length}
@@ -306,21 +293,28 @@
   id="cmc-chart"
   class="section-style mx-auto mt-8 w-full max-w-prose"
 >
-  <h2 class="heading-style-2">Converted Mana Cost Tally</h2>
+  <hgroup class="mb-1">
+    <h2 class="heading-style-2">Converted Mana Cost Tally</h2>
+    <p class="text-minor">A card has one converted mana cost</p>
+  </hgroup>
 
-  <!-- <p>{JSON.stringify(barChartData)}</p> -->
-  <ChartBars data={barChartData} />
+  {#if barChartData.length}
+    <ChartBars data={barChartData} />
+  {/if}
 </section>
 
 <section
   id="color-identity-chart"
   class="section-style mx-auto mt-8 w-full max-w-prose"
 >
-  <hgroup>
+  <hgroup class="mb-1">
     <h2 class="heading-style-2">Color Identity Tally</h2>
-    <p class="text-minor">A card can have more than one color in its color identity.</p>
+    <p class="text-minor">A card can have more than one color in its color identity</p>
   </hgroup>
 
-  <!-- <p>{JSON.stringify(pieChartData)}</p> -->
-  <ChartPies data={pieChartData} />
+  {#if pieChartData.length}
+    <div class="mx-auto my-4 max-w-max">
+      <ChartPies data={pieChartData} />
+    </div>
+  {/if}
 </section>
