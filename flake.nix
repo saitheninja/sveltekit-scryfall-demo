@@ -19,8 +19,19 @@
         in
         pkgs.mkShell {
           packages = [
-            pkgs.nodePackages.nodejs # node 20.17.0
+            # node 20.17.0
+            pkgs.nodePackages.nodejs
+
+            # playwright 1.47.0
+            # version in package.json must match
+            pkgs.playwright-driver.browsers
+
+            # dotenvx 1.14.2
+            # load env variables in a way that playwright can access
+            pkgs.dotenvx
           ];
+
+          PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
         };
     };
 }
