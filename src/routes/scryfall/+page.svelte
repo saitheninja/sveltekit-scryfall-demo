@@ -274,6 +274,38 @@
           <p class="text-minor text-center">loading...</p>
         {/if}
       </section>
+    </div>
+
+    <div class="space-y-4">
+      <section
+        id="cmc-chart"
+        class="section-style mx-auto w-full max-w-prose"
+      >
+        <hgroup class="mb-1">
+          <h2 class="heading-style-2">Converted Mana Cost Tally</h2>
+          <p class="text-minor">A card has one converted mana cost</p>
+        </hgroup>
+
+        {#if barChartData.length}
+          <ChartBars data={barChartData} />
+        {/if}
+      </section>
+
+      <section
+        id="color-identity-chart"
+        class="section-style mx-auto w-full max-w-prose"
+      >
+        <hgroup class="mb-1">
+          <h2 class="heading-style-2">Color Identity Tally</h2>
+          <p class="text-minor">A card can have more than one color in its color identity</p>
+        </hgroup>
+
+        {#if pieChartData.length}
+          <div class="mx-auto my-4 max-w-max">
+            <ChartPies data={pieChartData} />
+          </div>
+        {/if}
+      </section>
 
       <section
         id="cards-data"
@@ -313,39 +345,6 @@
           </details>
         {/if}
       </section>
-    </div>
-
-    <div class="space-y-4">
-      <section
-        id="cmc-chart"
-        class="section-style mx-auto w-full max-w-prose"
-      >
-        <hgroup class="mb-1">
-          <h2 class="heading-style-2">Converted Mana Cost Tally</h2>
-          <p class="text-minor">A card has one converted mana cost</p>
-        </hgroup>
-
-        {#if barChartData.length}
-          <ChartBars data={barChartData} />
-        {/if}
-      </section>
-
-      <section
-        id="color-identity-chart"
-        class="section-style mx-auto w-full max-w-prose"
-      >
-        <hgroup class="mb-1">
-          <h2 class="heading-style-2">Color Identity Tally</h2>
-          <p class="text-minor">A card can have more than one color in its color identity</p>
-        </hgroup>
-
-        {#if pieChartData.length}
-          <div class="mx-auto my-4 max-w-max">
-            <ChartPies data={pieChartData} />
-          </div>
-        {/if}
-      </section>
-
     </div>
   </div>
 {/if}
