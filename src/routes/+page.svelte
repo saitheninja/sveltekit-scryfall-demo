@@ -29,7 +29,11 @@
   {#if !checkJwtValid($jwt)}
     <LogInForm {form} />
   {:else}
-    <p>You are logged in as {$email}.</p>
+    <hgroup class="mb-2">
+      <h2 class="heading-style-2">Logged In</h2>
+      <p class="text-minor">as {$email}</p>
+    </hgroup>
+
     <p class="mb-4">
       You can now access the <a
         class="underline"

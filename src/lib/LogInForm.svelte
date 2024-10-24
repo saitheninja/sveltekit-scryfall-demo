@@ -22,7 +22,18 @@
   };
 </script>
 
-{#if !form?.success}
+
+{#if form.message}
+  <div class="mt-8 italic text-red-500">
+    <h2 class="heading-style-2">Error</h2>
+
+    <p>
+      {form.message}
+    </p>
+  </div>
+{/if}
+
+{#if !form || !form.success}
   <div class="mx-auto w-full max-w-prose p-4">
     <hgroup class="mb-4">
       <h2
@@ -39,7 +50,7 @@
       aria-labelledby="heading-log-in"
       class="flex flex-col gap-2"
       method="POST"
-      action="?/login"
+      action="/?/login"
       use:enhance={submitFn}
     >
       <div class="flex flex-col">
@@ -75,22 +86,6 @@
         </button>
       </div>
     </form>
-
-    {#if form && !form.success}
-      <div class="mt-8 italic text-red-500">
-        <h2 class="heading-style-2">Error!</h2>
-
-        <p>
-          {form?.message}
-        </p>
-      </div>
-    {/if}
-  </div>
-{:else}
-  <div class="mx-auto flex max-w-sm flex-col justify-center p-4">
-    <h2 class="mb-4 text-center">Logged In!</h2>
-
-    <p class="mb-4 text-center">You have successfully logged in!</p>
   </div>
 {/if}
 
