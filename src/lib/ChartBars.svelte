@@ -7,7 +7,7 @@
   export let data: ChartEntry[] = [];
 
   const margin = {
-    top: 20,
+    top: 40,
     right: 0,
     left: 40,
     bottom: 40,
@@ -54,27 +54,8 @@
     {height}
   >
     <g
-      bind:this={xAxis}
-      transform="translate(0,{height - margin.bottom})"
-    >
-      <text
-        x={margin.left}
-        y={0}
-        text-anchor="end">total mana cost (number)</text
-      >
-    </g>
-
-    <g
-      bind:this={yAxis}
-      transform="translate({margin.left},0)"
-    >
-      <text text-anchor="start">total cards (number)</text>
-    </g>
-
-    <g
       id="grid-lines"
-      stroke="#000"
-      stroke-opacity={0.1}
+      class="stroke-gray-200"
     >
       {#each yScale.ticks() as tick, i}
         {@const yOffset = yScale(tick)}
@@ -88,6 +69,30 @@
         ></line>
       {/each}
     </g>
+
+    <g
+      id="x-axis"
+      bind:this={xAxis}
+      transform="translate(0,{height - margin.bottom})"
+    />
+    <text
+      x={width - margin.right}
+      y={height - margin.bottom / 8}
+      text-anchor="end"
+      class="fill-gray-600 text-xs">Converted Mana Cost (number) →</text
+    >
+
+    <g
+      id="y-axis"
+      bind:this={yAxis}
+      transform="translate({margin.left},0)"
+    />
+    <text
+      x={0}
+      y={margin.top / 2}
+      text-anchor="start"
+      class="fill-gray-600 text-xs">↑ Total Cards (number)</text
+    >
 
     {#each data as { name, value }}
       <rect
@@ -107,10 +112,8 @@
         dx={10}
         y={yScale(value)}
         dy={-4}
-        class="text-sm"
+        class="text-xs">{value}</text
       >
-        {value}
-      </text>
     {/each}
   </svg>
 </div>
