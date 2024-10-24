@@ -158,7 +158,7 @@
   <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
     <div class="space-y-4">
       <section
-        id="fetch-cards"
+        id="account"
         class="section-style mx-auto w-full max-w-prose"
       >
         <hgroup
