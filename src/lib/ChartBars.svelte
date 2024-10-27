@@ -1,5 +1,4 @@
 <script lang="ts">
-  // https://svelte.dev/repl/8eea62cd40ae4c7380196601b9f54990?version=3.56.0
   import type { ChartEntry } from "$lib/interfaces";
 
   import * as d3 from "d3";
@@ -9,7 +8,7 @@
   const margin = {
     top: 40,
     right: 0,
-    left: 40,
+    left: 30,
     bottom: 40,
   };
 
@@ -33,7 +32,7 @@
     .range([height - margin.bottom, margin.top]);
 
   $: colorScale = d3
-    .scaleOrdinal(d3.quantize((t) => d3.interpolateBlues(t * 0.4 + 0.3), data.length))
+    .scaleOrdinal(d3.quantize((t) => d3.interpolateBuGn(t * 0.4 + 0.3), data.length))
     .domain(data.map((d) => d.name));
 
   let xAxis: SVGGElement;
@@ -96,6 +95,7 @@
 
     {#each data as { name, value }}
       <rect
+        id="rect-{name}"
         x={(xScale(name) ?? 0) + xScale.bandwidth() / 8}
         y={yScale(value)}
         width={xScale.bandwidth() - xScale.bandwidth() / 4}
@@ -107,11 +107,11 @@
       />
 
       <text
-        text-anchor="start"
-        x={xScale(name)}
-        dx={10}
+        text-anchor="middle"
+        x={(xScale(name) ?? 0) + xScale.bandwidth() / 2}
+        dx={0}
         y={yScale(value)}
-        dy={-4}
+        dy={-6}
         class="text-xs">{value}</text
       >
     {/each}

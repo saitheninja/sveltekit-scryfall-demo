@@ -9,65 +9,67 @@
     --font-body: Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
       Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     --font-mono: "Fira Mono", monospace;
-    --color-bg-0: rgb(202, 216, 228);
-    --color-bg-1: hsl(209, 36%, 86%);
-    --color-bg-2: hsl(224, 44%, 95%);
+    font-family: var(--font-body);
+
     --color-theme-1: #ff3e00;
     --color-theme-2: #4075a6;
     --color-text: rgba(0, 0, 0, 0.7);
-    --column-width: 42rem;
-    --column-margin-top: 4rem;
-    font-family: var(--font-body);
-    color: var(--color-text);
   }
 
   body {
-    background-attachment: fixed;
-    background-color: var(--color-bg-1);
-    background-size: 100vw 100vh;
-    background-image: radial-gradient(
-        50% 50% at 50% 50%,
-        rgba(255, 255, 255, 0.75) 0%,
-        rgba(255, 255, 255, 0) 100%
-      ),
-      linear-gradient(180deg, var(--color-bg-0) 0%, var(--color-bg-1) 15%, var(--color-bg-2) 50%);
+    @apply bg-fixed;
+    @apply bg-teal-800;
+    @apply bg-[url("noise.svg")] bg-blend-overlay;
+    @apply accent-teal-300;
   }
 
   pre {
-    font-size: 16px;
-    font-family: var(--font-mono);
-    background-color: rgba(255, 255, 255, 0.45);
-    border-radius: 3px;
-    box-shadow: 2px 2px 6px rgb(255 255 255 / 25%);
-    padding: 0.5em;
-    overflow-x: auto;
-    color: var(--color-text);
+    @apply overflow-x-auto;
+    @apply px-2 pb-1 pt-2;
+    @apply rounded-sm;
+    @apply shadow-inner;
+    @apply bg-gray-100;
   }
 }
 
 /* inputs */
 @layer components {
-  .button-primary {
-    @apply bg-blue-900 hover:bg-blue-700 focus:bg-blue-700;
-    @apply text-white;
+  .button-base {
     @apply max-w-max rounded px-2 py-1;
     @apply font-bold;
+    @apply shadow-sm;
+  }
+
+  .button-primary {
+    @apply button-base;
+    @apply bg-teal-800;
+    @apply text-white;
+    @apply shadow-green-600;
   }
 
   .button-secondary {
-    @apply bg-blue-100 hover:bg-blue-200 focus:bg-blue-200;
-    @apply max-w-max rounded px-2 py-1;
-    @apply font-bold;
+    @apply button-base;
+    @apply bg-teal-100;
+    @apply shadow-teal-300;
+  }
+
+  button:hover,
+  button:focus {
+    @apply bg-teal-300;
+    @apply text-black;
+    @apply shadow-teal-500;
   }
 
   button:active {
-    @apply bg-blue-100;
+    @apply bg-teal-100;
+    @apply text-black;
+    @apply shadow-inner;
   }
 
   button:disabled {
     @apply bg-gray-400 hover:bg-gray-400;
     @apply text-gray-300;
-    @apply italic;
+    @apply shadow-gray-500;
   }
 
   input {
@@ -105,16 +107,16 @@
 @layer components {
   .section-style {
     @apply px-4 py-2;
-    @apply rounded border border-gray-600;
-    @apply bg-gray-50;
+    @apply rounded-lg border border-gray-600 bg-gray-50;
+    @apply shadow-md shadow-gray-600;
   }
 }
 
 /* text */
 @layer components {
   .heading-style-1 {
-    @apply font-bold;
-    @apply text-3xl;
+    @apply text-center text-4xl font-bold text-gray-100;
+    @apply mb-6;
   }
 
   .heading-style-2 {
