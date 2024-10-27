@@ -1,7 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
-
   import { goto } from "$app/navigation";
+
+  import { fly } from "svelte/transition";
 
   import { email, jwt } from "$lib/local-storage";
 
@@ -183,17 +184,18 @@
           class="mb-2"
         >
           <h2 class="heading-style-2">Fetch Cards</h2>
-          <p class="text-minor">Choose range from 1 to 1000</p>
+          <p class="text-minor">Choose range from {rangeMin} to {rangeMax}</p>
         </hgroup>
 
-        <section class="mx-auto w-full">
+        <section class="mx-auto w-full pt-2">
           <div class="w-full rounded border">
-            <div class="flex h-6 flex-row pr-6">
+            <div class="flex h-6 flex-row justify-between pr-6">
               {#each cardEmojis as emoji, i}
-                <span class="w-full">
+                <span>
                   <p
                     id="emoji-{i}"
                     class="absolute"
+                    transition:fly={{ x: 20, y: 0 }}
                   >
                     {emoji}
                   </p>
