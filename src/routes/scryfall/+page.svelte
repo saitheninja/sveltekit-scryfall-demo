@@ -35,20 +35,16 @@
     );
     const json = await response.json();
 
-    // console.log(response);
-    // console.log(json);
+    isLoading = false;
 
     if (!response.ok) {
       throw new Error(`Error: ${response.status} ${json.message}`);
     }
 
     cardsData = json;
-    isLoading = false;
   }
 
   async function fetchRandomRange() {
-    isLoading = true;
-
     rangeStart = Math.floor(Math.random() * rangeMax);
     rangeEnd = Math.floor(Math.random() * (rangeMax - rangeStart)) + rangeStart;
 
@@ -182,8 +178,8 @@
           <p class="text-minor">You are logged in as {$email}</p>
         </hgroup>
 
-        <div class="mx-auto mt-4 max-w-max">
-          <LogOutForm />
+        <div class="mx-auto mb-1 mt-4 max-w-max">
+          <LogOutForm disabled={isLoading} />
         </div>
       </section>
 
