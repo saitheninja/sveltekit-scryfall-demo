@@ -65,8 +65,10 @@
     return emojis;
   }
 
-  function makeBarChartData(cards: Card[]) {
+  function makeBarChartData(cards: Card[]): ChartEntry[] {
     let cmcsTally: { cmc: number; tally: number }[] = [];
+    let barChartData: ChartEntry[] = [];
+    if (cards.length === 0) return barChartData;
 
     cards.forEach((card) => {
       const index = cmcsTally.findIndex(({ cmc }) => cmc === card.cmc);
@@ -79,16 +81,26 @@
     });
 
     cmcsTally.sort((a, b) => a.cmc - b.cmc);
+    const lastIndexSlice = cmcsTally.slice(-1);
+    const maxCmc = lastIndexSlice[0].cmc;
 
-    let barChartData: ChartEntry[] = [];
-    cmcsTally.forEach((entry) => {
-      barChartData.push({ name: entry.cmc.toString(), value: entry.tally });
-    });
+    // add in 0 tally for cmcs in range
+    for (let cmc = 0; cmc <= maxCmc; cmc++) {
+      const dataIndex = cmcsTally.findIndex((entry) => entry.cmc === cmc);
+
+      if (dataIndex !== -1) {
+        barChartData.push({ name: cmc.toString(), value: cmcsTally[dataIndex].tally });
+      } else {
+        barChartData.push({ name: cmc.toString(), value: 0 });
+      }
+    }
+
+    barChartData.sort((a, b) => parseInt(a.name) - parseInt(b.name));
 
     return barChartData;
   }
 
-  function makePieChartData(cards: Card[]) {
+  function makePieChartData(cards: Card[]): ChartEntry[] {
     let colorTally: { color: Colors; tally: number }[] = [];
 
     // process raw data
