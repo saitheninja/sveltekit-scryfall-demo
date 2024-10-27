@@ -118,8 +118,11 @@
   }
 
   .heading-style-2 {
-    @apply font-bold;
-    @apply text-2xl;
+    @apply text-2xl font-bold;
+  }
+
+  .heading-style-3 {
+    @apply text-xl font-bold;
   }
 
   .text-minor {

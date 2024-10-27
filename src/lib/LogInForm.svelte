@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { SubmitFunction } from "@sveltejs/kit";
-
   import { enhance } from "$app/forms";
   import { goto } from "$app/navigation";
 
   import { email, jwt } from "$lib/local-storage";
+
+  import type { SubmitFunction } from "@sveltejs/kit";
 
   export let form;
 
@@ -22,19 +22,8 @@
   };
 </script>
 
-
-{#if form.message}
-  <div class="mt-8 italic text-red-500">
-    <h2 class="heading-style-2">Error</h2>
-
-    <p>
-      {form.message}
-    </p>
-  </div>
-{/if}
-
-{#if !form || !form.success}
-  <div class="mx-auto w-full max-w-prose p-4">
+<div class="w-full">
+  {#if !form?.success}
     <hgroup class="mb-4">
       <h2
         id="heading-log-in"
@@ -77,7 +66,7 @@
         />
       </div>
 
-      <div class="mx-auto max-w-max pt-4">
+      <div class="mx-auto max-w-max py-4">
         <button
           id="log-in-submit"
           class="button-primary"
@@ -86,6 +75,15 @@
         </button>
       </div>
     </form>
-  </div>
-{/if}
+  {/if}
 
+  {#if form?.message}
+    <hr class="mb-4 mt-2" />
+
+    <div class="pb-2 italic text-red-500">
+      <h3 class="heading-style-3">Error</h3>
+
+      <p>{form.message}</p>
+    </div>
+  {/if}
+</div>
