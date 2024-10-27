@@ -17,11 +17,16 @@
 <div class="flex min-h-screen flex-col">
   <Header />
 
-  <main class="m-auto flex h-full w-full max-w-5xl flex-grow flex-col p-4">
+  <main class="flex h-full w-full flex-grow flex-col p-4">
     <slot />
   </main>
 
   <footer class="flex flex-col items-center justify-center p-2 text-sm italic">
-    <p>This is a footer.</p>
+    <p>
+      This is a footer. <a
+        href="#top"
+        class="underline hover:text-gray-100">Go to top ↑</a
+      >
+    </p>
   </footer>
 </div>
