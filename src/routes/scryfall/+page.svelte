@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { goto } from "$app/navigation";
+  // import { onMount } from "svelte";
+  // import { goto } from "$app/navigation";
 
   import { fly } from "svelte/transition";
 
@@ -140,12 +140,12 @@
   $: barChartData = makeBarChartData(cardsData);
   $: pieChartData = makePieChartData(cardsData);
 
-  onMount(async () => {
-    if ($jwt !== "loggedin") {
-      // alert("You are not logged in. Redirecting to home page.");
-      await goto("/");
-    }
-  });
+  // onMount(async () => {
+  //   if ($jwt !== "loggedin") {
+  //     alert("You are not logged in. Redirecting to home page.");
+  //     await goto("/");
+  //   }
+  // });
 </script>
 
 <svelte:head>
