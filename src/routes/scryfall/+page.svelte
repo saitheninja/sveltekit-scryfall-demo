@@ -156,164 +156,163 @@
   />
 </svelte:head>
 
-<h1 class="heading-style-1 mb-4 text-center">Scryfall Data</h1>
+<h1 class="heading-style-1 mb-6 text-center">Scryfall Data</h1>
 
 {#if $jwt !== "loggedin"}
-  <section class="section-style mx-auto max-w-prose text-center">
-    <p>You are not logged in!</p>
-    <p>Redirecting to home page.</p>
-  </section>
-{:else}
-  <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
-    <div class="space-y-4">
-      <section
-        id="account"
-        class="section-style mx-auto w-full max-w-prose"
-      >
-        <hgroup
-          id="heading-fetch-cards"
-          class="mb-2"
-        >
-          <h2 class="heading-style-2">Account</h2>
-          <p class="text-minor">You are logged in as {$email}</p>
-        </hgroup>
+  <div class="section-style mx-auto w-full max-w-sm">
+    <h2 class="heading-style-2 mb-1">Not Logged In</h2>
 
-        <div class="mx-auto mb-1 mt-4 max-w-max">
-          <LogOutForm disabled={isLoading} />
+    <p>Go to the <a href="/">log in page</a>.</p>
+  </div>
+{:else}
+  <div class="grid grid-cols-1 justify-center gap-6">
+    <section
+      id="account"
+      class="section-style mx-auto w-full max-w-sm"
+    >
+      <hgroup
+        id="heading-fetch-cards"
+        class="mb-1"
+      >
+        <h2 class="heading-style-2">Account</h2>
+        <p class="text-minor">You are logged in as {$email}</p>
+      </hgroup>
+
+      <div class="mx-auto mb-1 mt-4 max-w-max">
+        <LogOutForm disabled={isLoading} />
+      </div>
+    </section>
+
+    <section
+      id="fetch-cards"
+      class="section-style mx-auto w-full max-w-prose"
+    >
+      <hgroup
+        id="heading-fetch-cards"
+        class="mb-1"
+      >
+        <h2 class="heading-style-2">Fetch Cards</h2>
+        <p class="text-minor">Choose range from {rangeMin} to {rangeMax}</p>
+      </hgroup>
+
+      <section class="mx-auto w-full pt-2">
+        <div class="w-full rounded border">
+          <div class="flex h-6 flex-row justify-between pr-6">
+            {#each cardEmojis as emoji, i}
+              <span>
+                <p
+                  id="emoji-{i}"
+                  class="absolute"
+                  transition:fly={{ x: 20, y: 0 }}
+                >
+                  {emoji}
+                </p>
+              </span>
+            {/each}
+          </div>
         </div>
+
+        <p class="text-minor text-center">
+          {range}
+          {#if range === 1}
+            card selected
+          {:else}
+            cards selected
+          {/if}
+        </p>
       </section>
 
-      <section
-        id="fetch-cards"
-        class="section-style mx-auto w-full max-w-prose"
+      <form
+        id="form-fetch-range"
+        aria-labelledby="heading-fetch-cards"
+        on:submit|preventDefault={() => fetchCardRange(rangeStart, rangeEnd)}
       >
-        <hgroup
-          id="heading-fetch-cards"
-          class="mb-2"
-        >
-          <h2 class="heading-style-2">Fetch Cards</h2>
-          <p class="text-minor">Choose range from {rangeMin} to {rangeMax}</p>
-        </hgroup>
+        <div class="flex flex-row justify-between">
+          <div class="flex flex-col">
+            <label for="range-start">Start</label>
 
-        <section class="mx-auto w-full pt-2">
-          <div class="w-full rounded border">
-            <div class="flex h-6 flex-row justify-between pr-6">
-              {#each cardEmojis as emoji, i}
-                <span>
-                  <p
-                    id="emoji-{i}"
-                    class="absolute"
-                    transition:fly={{ x: 20, y: 0 }}
-                  >
-                    {emoji}
-                  </p>
-                </span>
-              {/each}
-            </div>
+            <input
+              id="range-start"
+              name="range-start"
+              type="number"
+              min={rangeMin}
+              max={rangeEnd}
+              step="1"
+              bind:value={rangeStart}
+              required
+              class="w-18"
+            />
           </div>
 
-          <p class="text-minor text-center">
-            {range}
-            {#if range === 1}
-              card selected
-            {:else}
-              cards selected
-            {/if}
-          </p>
-        </section>
+          <div class="flex flex-col">
+            <label for="range-end">End</label>
 
-        <form
-          id="form-fetch-range"
-          aria-labelledby="heading-fetch-cards"
-          on:submit|preventDefault={() => fetchCardRange(rangeStart, rangeEnd)}
-        >
-          <div class="flex flex-row justify-between">
-            <div class="flex flex-col">
-              <label for="range-start">Start</label>
-
-              <input
-                id="range-start"
-                name="range-start"
-                type="number"
-                min={rangeMin}
-                max={rangeEnd}
-                step="1"
-                bind:value={rangeStart}
-                required
-                class="w-18"
-              />
-            </div>
-
-            <div class="flex flex-col">
-              <label for="range-end">End</label>
-
-              <input
-                id="range-end"
-                name="range-end"
-                type="number"
-                min={rangeStart}
-                max={rangeMax}
-                step="1"
-                bind:value={rangeEnd}
-                required
-                class="w-18"
-              />
-            </div>
+            <input
+              id="range-end"
+              name="range-end"
+              type="number"
+              min={rangeStart}
+              max={rangeMax}
+              step="1"
+              bind:value={rangeEnd}
+              required
+              class="w-18"
+            />
           </div>
+        </div>
 
-          <div class="flex flex-row">
-            <button
-              disabled={isLoading}
-              class="button-primary mx-auto mt-2">fetch chosen range</button
-            >
-          </div>
-        </form>
-
-        <form
-          id="form-fetch-random"
-          on:submit|preventDefault={() => fetchRandomRange()}
-          class="mx-auto mb-2 max-w-max"
-        >
+        <div class="flex flex-row">
           <button
             disabled={isLoading}
-            class="button-secondary mt-2">fetch random range</button
+            class="button-primary mx-auto mt-2">fetch chosen range</button
           >
-        </form>
+        </div>
+      </form>
 
-        {#if isLoading}
-          <p class="text-minor text-center">loading...</p>
-        {/if}
-      </section>
-    </div>
-
-    <div class="space-y-4">
-      <section
-        id="cmc-chart"
-        class="section-style mx-auto w-full max-w-prose"
+      <form
+        id="form-fetch-random"
+        on:submit|preventDefault={() => fetchRandomRange()}
+        class="mx-auto mb-2 max-w-max"
       >
-        <hgroup class="mb-1">
-          <h2 class="heading-style-2">Converted Mana Cost Tally</h2>
-          <p class="text-minor">A card has one converted mana cost</p>
-        </hgroup>
+        <button
+          disabled={isLoading}
+          class="button-secondary mt-2">fetch random range</button
+        >
+      </form>
 
-        {#if barChartData.length}
-          <ChartBars data={barChartData} />
-        {/if}
-      </section>
+      {#if isLoading}
+        <p class="text-minor text-center">loading...</p>
+      {/if}
+    </section>
 
+    {#if cardsData.length > 0}
       <section
         id="color-identity-chart"
         class="section-style mx-auto w-full max-w-prose"
       >
         <hgroup class="mb-1">
           <h2 class="heading-style-2">Color Identity Tally</h2>
-          <p class="text-minor">A card can have more than one color in its color identity</p>
+          <p class="text-minor">One card can have multiple colors</p>
         </hgroup>
 
         {#if pieChartData.length}
-          <div class="mx-auto my-4 max-w-max">
+          <div class="mx-auto my-4 w-full max-w-max">
             <ChartPies data={pieChartData} />
           </div>
+        {/if}
+      </section>
+
+      <section
+        id="cmc-chart"
+        class="section-style mx-auto w-full max-w-prose"
+      >
+        <hgroup class="mb-1">
+          <h2 class="heading-style-2">Converted Mana Cost Tally</h2>
+          <p class="text-minor">One card has one converted mana cost</p>
+        </hgroup>
+
+        {#if barChartData.length}
+          <ChartBars data={barChartData} />
         {/if}
       </section>
 
@@ -326,35 +325,35 @@
           <p class="text-minor">View detailed card data</p>
         </hgroup>
 
-        {#if cardsData.length}
-          <details>
-            <summary class="my-2">
-              {cardsData.length}
-              {#if cardsData.length === 1}
-                card
-              {:else}
-                cards
-              {/if}
-            </summary>
+        <details>
+          <summary class="my-2">
+            {cardsData.length}
+            {#if cardsData.length === 1}
+              card
+            {:else}
+              cards
+            {/if}
+          </summary>
 
-            {#each cardsData as card, i}
-              <details class="space-y-2">
-                <summary>
-                  {rangeStart + i}
-                  {card.name}
-                </summary>
+          {#each cardsData as card, i}
+            {@const hasRemainder = i % 2 ? true : false}
 
-                <dl class="space-y-1">
-                  {#each Object.entries(card) as entry}
-                    <dt class="font-bold">{entry[0]}</dt>
-                    <dd><pre>{JSON.stringify(entry[1])}</pre></dd>
-                  {/each}
-                </dl>
-              </details>
-            {/each}
-          </details>
-        {/if}
+            <details>
+              <summary class:bg-gray-100={hasRemainder}>
+                {rangeStart + i}
+                {card.name}
+              </summary>
+
+              <dl class="my-4">
+                {#each Object.entries(card) as entry}
+                  <dt class="mb-1 mt-4 font-bold">{entry[0]}</dt>
+                  <dd><pre>{JSON.stringify(entry[1])}</pre></dd>
+                {/each}
+              </dl>
+            </details>
+          {/each}
+        </details>
       </section>
-    </div>
+    {/if}
   </div>
 {/if}
