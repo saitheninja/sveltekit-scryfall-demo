@@ -60,7 +60,7 @@
         {@const yOffset = yScale(tick)}
 
         <line
-          id="grid-y-tick-{i.toString()}-{tick}"
+          id="grid-y-tick-{i}-{value}"
           x1={margin.left}
           x2={width - margin.right}
           y1={yOffset}
@@ -75,10 +75,11 @@
       transform="translate(0,{height - margin.bottom})"
     />
     <text
+      id="x-axis-label"
       x={width - margin.right}
       y={height - margin.bottom / 8}
       text-anchor="end"
-      class="fill-gray-600 text-xs">Converted Mana Cost (number) →</text
+      class="fill-gray-600 text-xs">Total Converted Mana Cost (mana) →</text
     >
 
     <g
@@ -87,10 +88,11 @@
       transform="translate({margin.left},0)"
     />
     <text
+      id="y-axis-label"
       x={0}
       y={margin.top / 2}
       text-anchor="start"
-      class="fill-gray-600 text-xs">↑ Total Cards (number)</text
+      class="fill-gray-600 text-xs">↑ Total (cards)</text
     >
 
     {#each data as { name, value }}
@@ -107,6 +109,7 @@
       />
 
       <text
+        id="label-total-{name}"
         text-anchor="middle"
         x={(xScale(name) ?? 0) + xScale.bandwidth() / 2}
         dx={0}
