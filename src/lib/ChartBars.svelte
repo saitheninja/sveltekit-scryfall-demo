@@ -15,6 +15,14 @@
   const height = 500;
   let width = 500;
 
+  let xAxis: SVGGElement;
+  let yAxis: SVGGElement;
+
+  $: maxValue = Math.max.apply(
+    null,
+    data.map((d) => d.value),
+  );
+
   $: xScale = d3
     .scaleBand()
     .domain(data.map((d) => d.name))
@@ -22,26 +30,16 @@
 
   $: yScale = d3
     .scaleLinear()
-    .domain([
-      0,
-      Math.max.apply(
-        null,
-        data.map((d) => d.value),
-      ),
-    ])
-    .range([height - margin.bottom, margin.top]);
+    .domain([0, maxValue])
+    .range([height - margin.bottom, margin.top])
+    .nice(); // round to nice values
 
   $: colorScale = d3
     .scaleOrdinal(d3.quantize((t) => d3.interpolateBuGn(t * 0.4 + 0.3), data.length))
     .domain(data.map((d) => d.name));
 
-  let xAxis: SVGGElement;
-  let yAxis: SVGGElement;
-
-  $: {
-    d3.select(xAxis).call(d3.axisBottom(xScale));
-    d3.select(yAxis).call(d3.axisLeft(yScale).tickArguments([10]));
-  }
+  $: d3.select(xAxis).call(d3.axisBottom(xScale));
+  $: d3.select(yAxis).call(d3.axisLeft(yScale).ticks(Math.min(10, maxValue)));
 </script>
 
 <div
@@ -56,8 +54,8 @@
       id="grid-lines"
       class="stroke-gray-200"
     >
-      {#each yScale.ticks() as tick, i}
-        {@const yOffset = yScale(tick)}
+      {#each yScale.ticks(Math.min(10, maxValue)) as value, i}
+        {@const yOffset = yScale(value)}
 
         <line
           id="grid-y-tick-{i}-{value}"
