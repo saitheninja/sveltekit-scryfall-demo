@@ -1,5 +1,4 @@
 import { fail } from "@sveltejs/kit";
-// import { redirect } from "@sveltejs/kit";
 
 import type { Actions } from "./$types";
 
@@ -28,7 +27,6 @@ export const actions: Actions = {
       return fail(400, { message: "Incorrect email or password!" });
     }
 
-    return { success: true, email: email, jwt: "loggedin" };
-    // throw redirect(303, "/scryfall");
+    return { success: true, email, jwt: "loggedin" };
   },
 };

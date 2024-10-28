@@ -13,7 +13,8 @@
       if (result.type === "success") {
         $email = result.data?.email?.toString() ?? "";
         $jwt = result.data?.jwt?.toString() ?? "";
-        // alert("Login sucessful. Redirecting to data page.");
+
+        alert("Login successful. Redirecting to Scryfall data page.");
         await goto("/scryfall");
       } else {
         await update();
