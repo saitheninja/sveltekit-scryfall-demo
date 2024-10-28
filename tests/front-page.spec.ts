@@ -26,13 +26,17 @@ test.describe("log in", () => {
     await page.goto("http://localhost:5173");
   });
 
-  test("scryfall page redirects to home when not logged in", async ({ page }) => {
+  test("scryfall page only shows log in message", async ({ page }) => {
     await page.goto("http://localhost:5173/scryfall");
 
-    const h1 = page.getByRole("heading", { level: 1 });
+    // message to log in is visible
+    const heading = page.getByRole("heading", { level: 2 });
+    await expect(heading).toBeVisible();
+    await expect(heading).toHaveText("Not Logged In");
 
-    await expect(h1).toBeVisible();
-    await expect(h1).toHaveText("Welcome!");
+    // account section not visible
+    const locator = page.locator("#account");
+    await expect(locator).not.toBeVisible();
   });
 
   // test("form has h2", async ({ page }) => {
@@ -41,9 +45,9 @@ test.describe("log in", () => {
   //   await expect(h2).toBeVisible();
   //   await expect(h2).toHaveText("Log In");
   // });
-//   await page.getByRole("link", { name: "Get started" }).click();
+  //   await page.getByRole("link", { name: "Get started" }).click();
 
-  test("log in form displays error on unsuccessful login", async ({ page }) => {
+  test("form displays error on unsuccessful login", async ({ page }) => {
     // get heading
     const headingLogIn = page.getByRole("heading", {
       name: "Log In",
@@ -66,7 +70,7 @@ test.describe("log in", () => {
     await expect(errorHeading).toHaveText("Error");
   });
 
-  test("log in form successfully logs in test user", async ({ page }) => {
+  test("form successfully logs in test user", async ({ page }) => {
     // get heading
     const headingLogIn = page.getByRole("heading", {
       name: "Log In",
