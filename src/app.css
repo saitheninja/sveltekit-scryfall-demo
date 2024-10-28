@@ -30,6 +30,11 @@
     @apply shadow-inner;
     @apply bg-gray-100;
   }
+
+  a {
+    @apply underline;
+    @apply hover:text-gray-600;
+  }
 }
 
 /* inputs */
