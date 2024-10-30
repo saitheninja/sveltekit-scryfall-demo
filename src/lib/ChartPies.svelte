@@ -36,7 +36,7 @@
     if (name === "B") return "#CCC3C1"; // black
     if (name === "R") return "#F8AA8F"; // red
     if (name === "G") return "#9CD4AF"; // green
-  }
+  };
 
   let arcs: {
     name: string;
@@ -46,17 +46,15 @@
     centroid: [number, number];
   }[];
 
-  $: {
-    arcs = pieGenerator(data).map((arc) => {
-      return {
-        name: arc.data.name,
-        value: arc.data.value,
-        d: arcGenerator(arc), // svg path
-        fill: colorGenerator(arc.data.name) as string,
-        centroid: arcGeneratorLabels.centroid(arc),
-      };
-    });
-  }
+  $: arcs = pieGenerator(data).map((arc) => {
+    return {
+      name: arc.data.name,
+      value: arc.data.value,
+      d: arcGenerator(arc), // svg path
+      fill: colorGenerator(arc.data.name) as string,
+      centroid: arcGeneratorLabels.centroid(arc),
+    };
+  });
 </script>
 
 <svg
@@ -71,8 +69,8 @@
       <path
         {d}
         {fill}
-        stroke="#000"
-        stroke-width={1}
+        stroke-width={0.5}
+        class="stroke-gray-600"
       />
     {/each}
   </g>
@@ -84,7 +82,7 @@
         x={centroid[0]}
         y={centroid[1]}
         text-anchor="middle"
-        class="font-bold text-sm"
+        class="text-xs font-bold"
       >
         {name}
       </text>
@@ -93,7 +91,7 @@
         x={centroid[0]}
         y={centroid[1] + 16}
         text-anchor="middle"
-        class="text-sm"
+        class="text-xs"
       >
         {value.toLocaleString()}
       </text>
