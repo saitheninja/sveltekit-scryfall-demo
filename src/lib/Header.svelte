@@ -1,113 +1,52 @@
-<script>
+<script lang="ts">
   import { page } from "$app/stores";
 </script>
 
-<header class="mb-4 flex flex-row justify-between">
+<header class="flex flex-row justify-between border-b border-b-gray-200 py-4">
   <a
-    class="skip-to-main-link"
+    class="skip-link"
     href="#main"
   >
-    skip to main
+    skip to main content
   </a>
 
-  <nav class="mx-auto flex max-w-max flex-row justify-center">
-    <svg
-      viewBox="0 0 2 3"
-      aria-hidden="true"
-    >
-      <path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
-    </svg>
-
-    <ul>
+  <nav class="my-auto">
+    <ul class="flex w-full flex-row items-center">
       <li aria-current={$page.url.pathname === "/" ? "page" : undefined}>
-        <a href="/">Home</a>
+        <a
+          class="text-xl font-extrabold"
+          href="/">Scryfall Data Demo</a
+        >
       </li>
+
       <li aria-current={$page.url.pathname.startsWith("/scryfall") ? "page" : undefined}>
         <a href="/scryfall">Scryfall</a>
       </li>
     </ul>
-
-    <svg
-      viewBox="0 0 2 3"
-      aria-hidden="true"
-    >
-      <path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
-    </svg>
   </nav>
 </header>
 
-<style>
-  nav {
-    --background: rgba(255, 255, 255, 0.7);
-  }
-
-  svg {
-    width: 2em;
-    height: 3em;
-    display: block;
-  }
-
-  path {
-    fill: var(--background);
-  }
-
-  ul {
-    position: relative;
-    padding: 0;
-    margin: 0;
-    height: 3em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    list-style: none;
-    background: var(--background);
-    background-size: contain;
-  }
-
-  li {
-    position: relative;
-    height: 100%;
-  }
-
-  li[aria-current="page"]::before {
-    --size: 6px;
-    content: "";
-    width: 0;
-    height: 0;
-    position: absolute;
-    top: 0;
-    left: calc(50% - var(--size));
-    border: var(--size) solid transparent;
-    border-top: var(--size) solid var(--color-theme-1);
+<style lang="postcss">
+  li[aria-current="page"] {
+    @apply underline;
+    @apply underline-offset-8;
+    @apply decoration-double;
+    @apply decoration-green-600;
   }
 
   a {
-    display: flex;
-    height: 100%;
-    align-items: center;
-    padding: 0 0.5rem;
-    color: var(--color-text);
-    font-weight: 700;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    text-decoration: none;
-    transition: color 0.2s linear;
+    @apply rounded-full px-6 py-2;
+    @apply no-underline;
   }
-
+  a:focus-visible,
   a:hover {
-    color: var(--color-theme-1);
+    @apply text-green-600;
+    @apply bg-gray-200;
   }
 
-  .skip-to-main-link {
-    @apply absolute bg-gray-50 px-4 py-3;
-    @apply h-fit;
-
-    transform: translateY(-140%);
-    transition: transform 0.05s;
-  }
-
-  .skip-to-main-link:focus {
-    transform: translateY(0%);
+  .skip-link {
+    @apply absolute z-10 translate-x-2;
+    @apply translate-y-[-200%] duration-0 focus-visible:translate-y-2;
+    @apply rounded-full px-6 py-2;
   }
 </style>

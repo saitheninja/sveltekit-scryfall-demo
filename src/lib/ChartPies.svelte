@@ -70,7 +70,7 @@
         {d}
         {fill}
         stroke-width={0.5}
-        class="stroke-gray-600"
+        class="stroke-gray-700"
       />
     {/each}
   </g>

@@ -149,17 +149,17 @@
 </script>
 
 <svelte:head>
-  <title>Scryfall</title>
+  <title>Scryfall Data</title>
   <meta
     name="description"
     content="Examine some data from Scryfall"
   />
 </svelte:head>
 
-<h1 class="heading-style-1 mb-6 text-center">Scryfall Data</h1>
+<h1 class="heading-style-1 mb-6">Scryfall Data</h1>
 
 {#if $jwt !== "loggedin"}
-  <div class="section-style mx-auto w-full max-w-sm">
+  <div class="mx-auto w-full max-w-sm">
     <h2 class="heading-style-2 mb-1">Not Logged In</h2>
 
     <p>Go to the <a href="/">log in page</a>.</p>
@@ -168,7 +168,7 @@
   <div class="grid grid-cols-1 justify-center gap-6">
     <section
       id="account"
-      class="section-style mx-auto w-full max-w-sm"
+      class="mx-auto w-full max-w-sm"
     >
       <hgroup
         id="heading-fetch-cards"
@@ -185,7 +185,7 @@
 
     <section
       id="fetch-cards"
-      class="section-style mx-auto w-full max-w-prose"
+      class="mx-auto w-full max-w-prose"
     >
       <hgroup
         id="heading-fetch-cards"
@@ -288,7 +288,7 @@
     {#if cardsData.length > 0}
       <section
         id="color-identity-chart"
-        class="section-style mx-auto w-full max-w-prose"
+        class="mx-auto w-full max-w-prose"
       >
         <hgroup class="mb-1">
           <h2 class="heading-style-2">Color Identity Tally</h2>
@@ -304,7 +304,7 @@
 
       <section
         id="cmc-chart"
-        class="section-style mx-auto w-full max-w-prose"
+        class="mx-auto w-full max-w-prose"
       >
         <hgroup class="mb-1">
           <h2 class="heading-style-2">Converted Mana Cost Tally</h2>
@@ -318,7 +318,7 @@
 
       <section
         id="cards-data"
-        class="section-style mx-auto w-full max-w-prose"
+        class="mx-auto w-full max-w-prose"
       >
         <hgroup class="mb-1">
           <h2 class="heading-style-2">Cards Data</h2>

@@ -23,16 +23,18 @@
   };
 </script>
 
-<div class="w-full">
+<div>
   {#if !form?.success}
-    <hgroup class="mb-4">
+    <hgroup class="mb-4 text-center">
       <h2
         id="heading-log-in"
-        class="heading-style-2"
+        class="heading-style-2 mb-1"
       >
         Log In
       </h2>
-      <p class="text-minor">"test@example.com" "password123"</p>
+
+      <p class="text-minor">"test@example.com"</p>
+      <p class="text-minor">"password123"</p>
     </hgroup>
 
     <form
@@ -67,7 +69,7 @@
         />
       </div>
 
-      <div class="mx-auto max-w-max py-4">
+      <div class="mx-auto mt-6 max-w-max">
         <button
           id="log-in-submit"
           class="button-primary"

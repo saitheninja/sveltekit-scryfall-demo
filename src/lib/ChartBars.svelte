@@ -68,7 +68,7 @@
           y1={yOffset}
           x2={margin.left}
           y2={yOffset}
-          class="stroke-gray-600"
+          class="stroke-gray-700"
         ></line>
 
         <text
@@ -76,7 +76,7 @@
           x={margin.left / 2}
           y={yOffset + 4}
           text-anchor="middle"
-          class="fill-gray-600 text-xs"
+          class="fill-gray-700 text-xs"
         >
           {value}
         </text>
@@ -89,7 +89,7 @@
         x2={margin.left}
         y2={height - margin.bottom}
         stroke-linecap="square"
-        class="stroke-gray-600"
+        class="stroke-gray-700"
       ></line>
 
       <text
@@ -97,7 +97,7 @@
         x={0}
         y={margin.top / 2}
         text-anchor="start"
-        class="fill-gray-600 text-xs">{yAxisLabel}</text
+        class="fill-gray-700 text-xs">{yAxisLabel}</text
       >
     </g>
 
@@ -120,7 +120,7 @@
           y1={height - margin.bottom}
           x2={xOffset}
           y2={height - margin.bottom + tickSize}
-          class="stroke-gray-600"
+          class="stroke-gray-700"
         ></line>
 
         <text
@@ -128,7 +128,7 @@
           x={xOffset}
           y={height - margin.bottom + tickSize + 14}
           text-anchor="middle"
-          class="fill-gray-600 text-xs"
+          class="fill-gray-700 text-xs"
         >
           {name}
         </text>
@@ -141,7 +141,7 @@
         x2={width - margin.right}
         y2={height - margin.bottom}
         stroke-linecap="square"
-        class="stroke-gray-600"
+        class="stroke-gray-700"
       ></line>
 
       <text
@@ -149,7 +149,7 @@
         x={width - margin.right}
         y={height - margin.bottom / 8}
         text-anchor="end"
-        class="fill-gray-600 text-xs">{xAxisLabel}</text
+        class="fill-gray-700 text-xs">{xAxisLabel}</text
       >
     </g>
 
@@ -162,7 +162,7 @@
         height={yScale(0) - yScale(value)}
         fill={colorScale(name)}
         stroke-width={0.5}
-        class="stroke-gray-600"
+        class="stroke-gray-700"
       />
 
       <text

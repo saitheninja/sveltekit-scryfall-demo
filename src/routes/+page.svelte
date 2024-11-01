@@ -15,9 +15,9 @@
   />
 </svelte:head>
 
-<h1 class="heading-style-1 mb-6 text-center">Welcome!</h1>
+<h1 class="heading-style-1">Welcome</h1>
 
-<section class="section-style mx-auto w-full max-w-sm">
+<section class="mx-auto w-full max-w-xs h-full my-auto">
   {#if $jwt !== "loggedin"}
     <LogInForm {form} />
   {:else}
