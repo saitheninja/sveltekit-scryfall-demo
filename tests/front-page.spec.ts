@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("homepage renders", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("http://localhost:5173");
+    await page.goto("/");
   });
 
   test("page has title", async ({ page }) => {
@@ -23,11 +23,11 @@ test.describe("homepage renders", () => {
 
 test.describe("log in", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("http://localhost:5173");
+    await page.goto("/");
   });
 
   test("scryfall page only shows log in message", async ({ page }) => {
-    await page.goto("http://localhost:5173/scryfall");
+    await page.goto("/scryfall");
 
     // message to log in is visible
     const heading = page.getByRole("heading", { level: 2 });
