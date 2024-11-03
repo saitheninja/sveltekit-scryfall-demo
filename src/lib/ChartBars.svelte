@@ -1,13 +1,15 @@
 <script lang="ts">
-  import type { ChartEntry } from "$lib/interfaces";
-
   import * as d3 from "d3";
+
+  import ChartBarsRect from "$lib/ChartBarsRect.svelte";
+
+  import type { ChartEntry } from "$lib/interfaces";
 
   export let data: ChartEntry[] = [];
   export let xAxisLabel = "Total Converted Mana Cost (mana) →";
   export let yAxisLabel = "↑ Total (cards)";
 
-  let tickSize = 8;
+  let tickSize = 6;
 
   const margin = {
     top: 40,
@@ -26,6 +28,7 @@
     .range([margin.left, width - margin.right])
     .paddingInner(0.1) // bar <-> bar
     .paddingOuter(0.1); // y-axis <-> bars <-> end
+  $: xBandwidth = xScale.bandwidth();
 
   $: yScaleDomainMax = Math.max(...data.map((d) => d.value));
   $: yScale = d3
@@ -34,16 +37,14 @@
     .range([height - margin.bottom, margin.top])
     .nice(); // round to nice values
   $: yScaleTicks = yScale.ticks(Math.min(10, yScaleDomainMax)); // show less ticks if max value < 10
+  $: yBaseline = yScale(0);
 
   $: colorScale = d3
     .scaleOrdinal(d3.quantize((t) => d3.interpolateBuGn(t * 0.4 + 0.3), data.length))
     .domain(data.map((d) => d.name));
 </script>
 
-<div
-  class="wrapper"
-  bind:clientWidth={width}
->
+<div bind:clientWidth={width}>
   <svg
     {width}
     {height}
@@ -73,9 +74,9 @@
 
         <text
           id="grid-y-label-{i}-{value}"
-          x={margin.left / 2}
+          x={margin.left - tickSize * 1.5}
           y={yOffset + 4}
-          text-anchor="middle"
+          text-anchor="end"
           class="fill-gray-700 text-xs"
         >
           {value}
@@ -154,25 +155,15 @@
     </g>
 
     {#each data as { name, value }}
-      <rect
-        id="rect-total-{name}"
-        x={xScale(name) ?? 0}
-        y={yScale(value)}
-        width={xScale.bandwidth()}
-        height={yScale(0) - yScale(value)}
+      <ChartBarsRect
+        name={"total-" + name}
+        {value}
         fill={colorScale(name)}
-        stroke-width={0.5}
-        class="stroke-gray-700"
-      />
-
-      <text
-        id="text-total-{name}"
-        text-anchor="middle"
-        x={(xScale(name) ?? 0) + xScale.bandwidth() / 2}
+        x={xScale(name)}
         y={yScale(value)}
-        dy={-8}
-        class="text-xs">{value}</text
-      >
+        baseline={yBaseline}
+        width={xBandwidth}
+      />
     {/each}
   </svg>
 </div>
