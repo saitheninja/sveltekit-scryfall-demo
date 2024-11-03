@@ -1,10 +1,9 @@
 <script lang="ts">
   // import { onMount } from "svelte";
-  // import { goto } from "$app/navigation";
-
   import { fly } from "svelte/transition";
 
-  import { email, jwt } from "$lib/local-storage";
+  import { goto } from "$app/navigation";
+  import { jwt, isLoading } from "$lib/local-storage";
 
   import ChartBars from "$lib/ChartBars.svelte";
   import ChartPies from "$lib/ChartPies.svelte";
@@ -18,13 +17,12 @@
 
   let rangeStart = 1;
   let rangeEnd = 10;
-  let isLoading = false;
 
   let cardEmojis: string[] = [];
   let cardsData: Card[] = [];
 
   async function fetchCardRange(start: number, end: number) {
-    isLoading = true;
+    $isLoading = "true";
 
     const response = await fetch(
       "/data?" +
@@ -35,13 +33,15 @@
     );
     const json = await response.json();
 
-    isLoading = false;
+    $isLoading = "";
 
     if (!response.ok) {
       throw new Error(`Error: ${response.status} ${json.message}`);
     }
 
     cardsData = json;
+
+    goto("#graphs"); // scroll to graphs
   }
 
   async function fetchRandomRange() {
@@ -222,65 +222,73 @@
         </p>
       </section>
 
-      <form
-        id="form-fetch-range"
-        aria-labelledby="heading-fetch-cards"
-        on:submit|preventDefault={() => fetchCardRange(rangeStart, rangeEnd)}
-      >
-        <div class="flex flex-row justify-between">
-          <div class="flex flex-col">
-            <label for="range-start">Start</label>
+      </div>
 
-            <input
-              id="range-start"
-              name="range-start"
-              type="number"
-              min={rangeMin}
-              max={rangeEnd}
-              step="1"
-              bind:value={rangeStart}
-              required
-              class="w-18"
-            />
-          </div>
-
-          <div class="flex flex-col">
-            <label for="range-end">End</label>
-
-            <input
-              id="range-end"
-              name="range-end"
-              type="number"
-              min={rangeStart}
-              max={rangeMax}
-              step="1"
-              bind:value={rangeEnd}
-              required
-              class="w-18"
-            />
-          </div>
-        </div>
-
-        <div class="flex flex-row">
-          <button
-            disabled={isLoading}
-            class="button-primary mx-auto mt-2">fetch chosen range</button
-          >
-        </div>
-      </form>
-
-      <form
-        id="form-fetch-random"
-        on:submit|preventDefault={() => fetchRandomRange()}
-        class="mx-auto mb-2 max-w-max"
-      >
-        <button
-          disabled={isLoading}
-          class="button-secondary mt-2">fetch random range</button
+      <div class="mx-auto w-64">
+        <form
+          id="form-fetch-range"
+          aria-labelledby="heading-fetch-cards"
+          on:submit|preventDefault={() => fetchCardRange(rangeStart, rangeEnd)}
         >
-      </form>
+          <div class="flex flex-row justify-between">
+            <div class="flex flex-col">
+              <label
+                for="range-start"
+                class="mx-auto">Start</label
+              >
 
-      {#if isLoading}
+              <input
+                id="range-start"
+                name="range-start"
+                type="number"
+                min={rangeMin}
+                max={rangeEnd}
+                step="1"
+                bind:value={rangeStart}
+                required
+                class="w-20"
+              />
+            </div>
+
+            <div class="flex flex-col">
+              <label
+                for="range-end"
+                class="mx-auto">End</label
+              >
+
+              <input
+                id="range-end"
+                name="range-end"
+                type="number"
+                min={rangeStart}
+                max={rangeMax}
+                step="1"
+                bind:value={rangeEnd}
+                required
+                class="w-20"
+              />
+            </div>
+          </div>
+
+          <button
+            disabled={$isLoading ? true : false}
+            class="button-primary mt-3 w-full">fetch chosen range</button
+          >
+        </form>
+
+        <form
+          id="form-fetch-random"
+          on:submit|preventDefault={() => fetchRandomRange()}
+          class="mb-2 mt-3"
+        >
+          <button
+            disabled={$isLoading ? true : false}
+            class="button-secondary w-full">fetch random range</button
+          >
+        </form>
+      </div>
+
+      {#if $isLoading ? true : false}
         <p class="text-minor text-center">loading...</p>
       {/if}
     </section>

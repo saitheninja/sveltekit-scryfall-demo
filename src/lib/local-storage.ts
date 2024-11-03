@@ -21,6 +21,9 @@
     };
   };
 
-  export const jwt = createLocalStorageEntry("jwt", "");
+  // user data
   export const email = createLocalStorageEntry("email", "");
+  export const jwt = createLocalStorageEntry("jwt", "");
+  // app status
+  export const isLoading = createLocalStorageEntry("isLoading", "");
 

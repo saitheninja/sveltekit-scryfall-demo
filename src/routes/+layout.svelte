@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  import { email, jwt } from "$lib/local-storage";
+ import { email, jwt, isLoading } from "$lib/local-storage";
 
   import Header from "$lib/Header.svelte";
 
@@ -11,6 +11,7 @@
     // init stores
     email.useLocalStorage();
     jwt.useLocalStorage();
+    isLoading.useLocalStorage();
   });
 </script>
 
