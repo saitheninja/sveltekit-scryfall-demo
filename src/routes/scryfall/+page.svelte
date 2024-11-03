@@ -1,5 +1,4 @@
 <script lang="ts">
-  // import { onMount } from "svelte";
   import { fly } from "svelte/transition";
 
   import { goto } from "$app/navigation";
@@ -7,7 +6,6 @@
 
   import ChartBars from "$lib/ChartBars.svelte";
   import ChartPies from "$lib/ChartPies.svelte";
-  import LogOutForm from "$lib/LogOutForm.svelte";
 
   import type { ChartEntry, Card, Colors } from "$lib/interfaces";
 
@@ -139,13 +137,6 @@
   $: cardEmojis = makeEmojiArray(range);
   $: barChartData = makeBarChartData(cardsData);
   $: pieChartData = makePieChartData(cardsData);
-
-  // onMount(async () => {
-  //   if ($jwt !== "loggedin") {
-  //     alert("You are not logged in. Redirecting to home page.");
-  //     await goto("/");
-  //   }
-  // });
 </script>
 
 <svelte:head>
@@ -165,24 +156,7 @@
     <p>Go to the <a href="/">log in page</a>.</p>
   </div>
 {:else}
-  <div class="grid grid-cols-1 justify-center gap-6">
-    <section
-      id="account"
-      class="mx-auto w-full max-w-sm"
-    >
-      <hgroup
-        id="heading-fetch-cards"
-        class="mb-1"
-      >
-        <h2 class="heading-style-2">Account</h2>
-        <p class="text-minor">You are logged in as {$email}</p>
-      </hgroup>
-
-      <div class="mx-auto mb-1 mt-4 max-w-max">
-        <LogOutForm disabled={isLoading} />
-      </div>
-    </section>
-
+  <div class="grid grid-cols-1 justify-center gap-8">
     <section
       id="fetch-cards"
       class="mx-auto w-full max-w-prose"
