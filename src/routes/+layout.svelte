@@ -17,11 +17,11 @@
 <div class="flex min-h-screen flex-col">
   <Header />
 
-  <main class="flex h-full w-full flex-grow flex-col p-4">
+  <main class="flex h-full w-full flex-grow flex-col px-8 py-4">
     <slot />
   </main>
 
-  <footer class="flex flex-col items-center justify-center p-2 text-sm italic">
+  <footer class="flex flex-col items-center p-2 text-sm italic">
     <p>
       This is a footer. <a
         href="#top"

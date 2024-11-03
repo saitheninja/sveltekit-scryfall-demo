@@ -7,6 +7,7 @@
 @layer base {
   :root {
     @apply text-gray-900;
+    @apply scroll-smooth;
 
     --font-mono: "Fira Mono", monospace;
   }
@@ -35,7 +36,7 @@
 /* inputs */
 @layer components {
   .button-base {
-    @apply max-w-max rounded-lg px-6 py-2;
+    @apply rounded-lg px-6 py-2;
     @apply font-semibold;
     @apply shadow-sm;
     @apply text-xl;
@@ -102,16 +103,16 @@
 
   /* add asterisk to labels with required input */
   label:has(+ input:required)::after {
-    content: " *";
-
     @apply text-red-500;
+
+    content: " *";
   }
 }
 
 /* text */
 @layer components {
   .heading-style-1 {
-    @apply text-5xl md:text-6xl font-bold px-4;
+    @apply mx-auto text-4xl font-bold md:text-6xl;
   }
 
   .heading-style-2 {

@@ -30,7 +30,7 @@
         id="heading-log-in"
         class="heading-style-2 mb-1"
       >
-        Log In
+        Log in to view data demo
       </h2>
 
       <p class="text-minor">"test@example.com"</p>
