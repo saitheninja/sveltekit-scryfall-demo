@@ -42,7 +42,7 @@
       aria-labelledby="heading-log-in"
       class="flex flex-col gap-2"
       method="POST"
-      action="/?/login"
+      action="/log-in?/login"
       use:enhance={submitFn}
     >
       <div class="flex flex-col">
