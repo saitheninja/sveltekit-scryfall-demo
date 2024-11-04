@@ -15,7 +15,7 @@
 >
   <button
     {disabled}
-    class="button-primary mx-auto max-w-max"
+    class="button-primary"
   >
     Log Out
   </button>

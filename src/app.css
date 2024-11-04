@@ -8,6 +8,7 @@
   :root {
     @apply text-gray-900;
     @apply scroll-smooth;
+    @apply scroll-pt-20;
 
     --font-mono: "Fira Mono", monospace;
   }
