@@ -18,12 +18,14 @@
 
   let rangeStart = 1;
   let rangeEnd = 10;
+  let showDetailedData = false;
 
   let cardEmojis: string[] = [];
   let cardsData: Card[] = [];
 
   async function fetchCardRange(start: number, end: number) {
     $isLoading = "true";
+    showDetailedData = false;
 
     const response = await fetch(
       "/data?" +
@@ -316,29 +318,32 @@
       </div>
 
       <section
-        id="cards-data"
+        id="detailed-data"
         class="mx-auto w-full max-w-prose"
       >
-        <hgroup class="mb-1">
-          <h2 class="heading-style-2">Cards Data</h2>
-          <p class="text-minor">View detailed card data</p>
-        </hgroup>
-
-        <details>
-          <summary class="my-2">
+        <hgroup class="mb-4">
+          <h2 class="heading-style-2">Detailed Card Data</h2>
+          <p class="text-minor">
             {cardsData.length}
             {#if cardsData.length === 1}
               card
             {:else}
               cards
             {/if}
-          </summary>
+            loaded
+          </p>
+        </hgroup>
 
+        {#if !showDetailedData}
+          <form on:submit|preventDefault={() => (showDetailedData = true)}>
+            <button class="button-secondary">Show Details</button>
+          </form>
+        {:else}
           {#each cardsData as card, i}
             {@const hasRemainder = i % 2 ? true : false}
 
             <details>
-              <summary class:bg-gray-100={hasRemainder}>
+              <summary class:bg-gray-300={hasRemainder}>
                 {rangeStart + i}
                 {card.name}
               </summary>
@@ -351,7 +356,7 @@
               </dl>
             </details>
           {/each}
-        </details>
+        {/if}
       </section>
     {/if}
   </div>
