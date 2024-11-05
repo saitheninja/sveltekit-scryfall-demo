@@ -282,35 +282,38 @@
     </section>
 
     {#if cardsData.length > 0}
-      <section
-        id="color-identity-chart"
-        class="mx-auto w-full max-w-prose"
+      <div
+        id="graphs"
+        class="grid grid-cols-1 justify-center gap-12 md:grid-cols-2"
       >
-        <hgroup class="mb-1">
-          <h2 class="heading-style-2">Color Identity Tally</h2>
-          <p class="text-minor">One card can have multiple colors</p>
-        </hgroup>
+        <section
+          id="color-identity-chart"
+          class="mx-auto w-full max-w-prose"
+        >
+          <hgroup class="mb-6 text-center">
+            <h2 class="heading-style-2">Color Identity Tally</h2>
+            <p class="text-minor">One card can have multiple colors</p>
+          </hgroup>
 
-        {#if pieChartData.length}
-          <div class="mx-auto my-4 w-full max-w-max">
+          <div class="mx-auto w-full max-w-max pt-8">
             <ChartPies data={pieChartData} />
           </div>
-        {/if}
-      </section>
+        </section>
 
-      <section
-        id="cmc-chart"
-        class="mx-auto w-full max-w-prose"
-      >
-        <hgroup class="mb-1">
-          <h2 class="heading-style-2">Converted Mana Cost Tally</h2>
-          <p class="text-minor">One card has one converted mana cost</p>
-        </hgroup>
+        <section
+          id="cmc-chart"
+          class="mx-auto w-full max-w-prose"
+        >
+          <hgroup class="mb-4 text-center">
+            <h2 class="heading-style-2">Converted Mana Cost Tally</h2>
+            <p class="text-minor">One card has one converted mana cost</p>
+          </hgroup>
 
-        {#if barChartData.length}
-          <ChartBars data={barChartData} />
-        {/if}
-      </section>
+          {#if barChartData.length}
+            <ChartBars data={barChartData} />
+          {/if}
+        </section>
+      </div>
 
       <section
         id="cards-data"
