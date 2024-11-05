@@ -1,33 +1,18 @@
 <script lang="ts">
-  import type { ChartEntry } from "$lib/interfaces";
-
   import * as d3 from "d3";
 
-  export let data: ChartEntry[];
+  import ChartPiesSlice from "$lib/ChartPiesSlice.svelte";
+
+  import type { ChartEntry } from "$lib/interfaces";
+
+  export let data: ChartEntry[] = [];
 
   // chart dimensions
-  const width = 500;
-  const height = Math.min(width, 500);
+  const width = 400;
+  const height = Math.min(width, 400);
   const radius = Math.min(width, height) / 2;
   const innerRadius = radius * 0.5;
   const outerRadius = radius - 1;
-  const labelRadius = (innerRadius + outerRadius) / 2;
-
-  const pieGenerator = d3
-    .pie<ChartEntry>()
-    .sort(null)
-    .value((d) => d.value)
-    .padAngle((1 / radius) * 8);
-
-  const arcGenerator = d3
-    .arc<d3.PieArcDatum<ChartEntry>>()
-    .innerRadius(innerRadius)
-    .outerRadius(outerRadius);
-
-  const arcGeneratorLabels = d3
-    .arc<d3.PieArcDatum<ChartEntry>>()
-    .innerRadius(labelRadius)
-    .outerRadius(labelRadius);
 
   // sampled colours
   const colorGenerator = (name: string) => {
@@ -39,23 +24,13 @@
     if (name === "C") return "#D1DEDE"; // colorless
   };
 
-  let arcs: {
-    name: string;
-    value: number;
-    d: string | null;
-    fill: string;
-    centroid: [number, number];
-  }[];
+  const pieGenerator = d3
+    .pie<ChartEntry>()
+    .sort(null)
+    .value((d) => d.value)
+    .padAngle((1 / radius) * 8);
 
-  $: arcs = pieGenerator(data).map((arc) => {
-    return {
-      name: arc.data.name,
-      value: arc.data.value,
-      d: arcGenerator(arc), // svg path
-      fill: colorGenerator(arc.data.name) as string,
-      centroid: arcGeneratorLabels.centroid(arc),
-    };
-  });
+  $: pieData = pieGenerator(data);
 </script>
 
 <svg
@@ -65,37 +40,12 @@
   style:max-width="100%"
   style:height="auto"
 >
-  <g>
-    {#each arcs as { d, fill }}
-      <path
-        {d}
-        {fill}
-        stroke-width={0.5}
-        class="stroke-gray-700"
-      />
-    {/each}
-  </g>
-
-  <g>
-    <!-- draw labels after, so that they aren't covered up -->
-    {#each arcs as { centroid, name, value }}
-      <text
-        x={centroid[0]}
-        y={centroid[1]}
-        text-anchor="middle"
-        class="text-xs font-bold"
-      >
-        {name}
-      </text>
-
-      <text
-        x={centroid[0]}
-        y={centroid[1] + 16}
-        text-anchor="middle"
-        class="text-xs"
-      >
-        {value.toLocaleString()}
-      </text>
-    {/each}
-  </g>
+  {#each pieData as slice}
+    <ChartPiesSlice
+      {slice}
+      fill={colorGenerator(slice.data.name)}
+      {innerRadius}
+      {outerRadius}
+    />
+  {/each}
 </svg>
