@@ -36,6 +36,7 @@
     if (name === "B") return "#CCC3C1"; // black
     if (name === "R") return "#F8AA8F"; // red
     if (name === "G") return "#9CD4AF"; // green
+    if (name === "C") return "#D1DEDE"; // colorless
   };
 
   let arcs: {

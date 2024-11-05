@@ -7,7 +7,9 @@
   import ChartBars from "$lib/ChartBars.svelte";
   import ChartPies from "$lib/ChartPies.svelte";
 
-  import type { ChartEntry, Card, Colors } from "$lib/interfaces";
+  import { Colors } from "$lib/interfaces";
+
+  import type { ChartEntry, Card } from "$lib/interfaces";
 
   const rangeMin = 1;
   const rangeMax = 1000;
@@ -99,6 +101,17 @@
 
     // process raw data
     cards.forEach((card) => {
+      if (card.color_identity.length === 0) {
+        const index = colorTally.findIndex(({ color }) => color === Colors.Colorless);
+
+        // if index does not exist create it and start tally, else add to existing tally
+        if (index === -1) {
+          colorTally.push({ color: Colors.Colorless, tally: 1 });
+        } else {
+          colorTally[index].tally++;
+        }
+      }
+
       card.color_identity.forEach((colorIdentity) => {
         const index = colorTally.findIndex(({ color }) => color === colorIdentity);
 
@@ -127,7 +140,7 @@
     // convert to ChartEntry format
     let pieChartData: ChartEntry[] = [];
     colorTally.forEach((entry) => {
-      pieChartData.push({ name: entry.color.toString(), value: entry.tally });
+      pieChartData.push({ name: entry.color, value: entry.tally });
     });
 
     return pieChartData;
