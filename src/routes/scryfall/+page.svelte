@@ -1,5 +1,6 @@
 <script lang="ts">
   import { fly } from "svelte/transition";
+  import { quintIn, quintOut } from "svelte/easing";
 
   import { goto } from "$app/navigation";
   import { jwt, isLoading } from "$lib/local-storage";
@@ -54,7 +55,8 @@
   function makeEmojiArray(length: number) {
     let emojis = [];
 
-    for (let step = 0; step < length; step++) {
+    // don't show more than rangeMax
+    for (let step = 0; step < Math.min(length, rangeMax); step++) {
       emojis.push(cardEmoji);
     }
 
@@ -176,21 +178,22 @@
     >
       <hgroup
         id="heading-fetch-cards"
-        class="mb-1"
+        class="mb-4 text-center"
       >
         <h2 class="heading-style-2">Fetch Cards</h2>
         <p class="text-minor">Choose range from {rangeMin} to {rangeMax}</p>
       </hgroup>
 
-      <section class="mx-auto w-full pt-2">
+      <div class="mx-auto mb-4 w-full">
         <div class="w-full rounded border">
-          <div class="flex h-6 flex-row justify-between pr-6">
+          <div class="flex h-6 flex-row justify-between bg-white pb-8 pr-6">
             {#each cardEmojis as emoji, i}
               <span>
                 <p
                   id="emoji-{i}"
-                  class="absolute"
-                  transition:fly={{ x: 20, y: 0 }}
+                  class="absolute pt-1"
+                  in:fly={{ x: 20, y: 0, easing: quintOut }}
+                  out:fly={{ x: 0, y: 40, easing: quintIn }}
                 >
                   {emoji}
                 </p>
@@ -199,7 +202,7 @@
           </div>
         </div>
 
-        <p class="text-minor text-center">
+        <p class="text-minor mt-1 text-center">
           {range}
           {#if range === 1}
             card selected
@@ -207,8 +210,6 @@
             cards selected
           {/if}
         </p>
-      </section>
-
       </div>
 
       <div class="mx-auto w-64">
