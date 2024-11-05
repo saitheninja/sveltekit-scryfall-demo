@@ -10,20 +10,22 @@
   export let baseline = 0;
   export let fill = "";
 
-  const heightTween = tweened(0, { duration: 1000, easing: quintOut });
+  const tweenHeight = tweened(0, { delay: 200, duration: 1000, easing: quintOut });
+  const tweenWidth = tweened(0, { duration: 200, easing: quintOut });
 
   $: height = baseline - y;
-  $: heightTween.set(height);
+  $: tweenHeight.set(height);
+  $: tweenWidth.set(width);
 
-  $: yGrow = baseline - $heightTween;
+  $: yGrow = baseline - $tweenHeight;
 </script>
 
 <rect
   id="rect-{name}"
   {x}
   y={yGrow}
-  {width}
-  height={$heightTween}
+  height={$tweenHeight}
+  width={$tweenWidth}
   {fill}
   stroke-width={1}
   class="stroke-gray-700"

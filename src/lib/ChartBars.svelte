@@ -60,7 +60,7 @@
           x2={width - margin.right}
           y2={yOffset}
           stroke-dasharray="5,5"
-          class="stroke-gray-200"
+          class="stroke-gray-300"
         ></line>
 
         <line
