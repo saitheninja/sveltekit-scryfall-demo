@@ -278,9 +278,9 @@
         </form>
       </div>
 
-      {#if $isLoading ? true : false}
-        <p class="text-minor text-center">loading...</p>
-      {/if}
+      <!-- {#if $isLoading ? true : false} -->
+      <!--   <p class="text-minor text-center">loading...</p> -->
+      <!-- {/if} -->
     </section>
 
     {#if cardsData.length > 0}
@@ -317,11 +317,8 @@
         </section>
       </div>
 
-      <section
-        id="detailed-data"
-        class="mx-auto w-full max-w-prose"
-      >
-        <hgroup class="mb-4">
+      <section id="detailed-data">
+        <hgroup class="mb-4 text-center">
           <h2 class="heading-style-2">Detailed Card Data</h2>
           <p class="text-minor">
             {cardsData.length}
@@ -335,27 +332,127 @@
         </hgroup>
 
         {#if !showDetailedData}
-          <form on:submit|preventDefault={() => (showDetailedData = true)}>
-            <button class="button-secondary">Show Details</button>
+          <form
+            on:submit|preventDefault={() => {
+              showDetailedData = true;
+            }}
+            class="mx-auto max-w-max"
+          >
+            <button
+              disabled={$isLoading ? true : false}
+              class="button-secondary">Show Details</button
+            >
           </form>
         {:else}
-          {#each cardsData as card, i}
-            {@const hasRemainder = i % 2 ? true : false}
+          <div class="mx-auto w-full overflow-auto">
+            <table class="mx-auto w-full overflow-auto whitespace-pre">
+              <caption class="mb-1 text-left">Full detailed card data.</caption>
 
-            <details>
-              <summary class:bg-gray-300={hasRemainder}>
-                {rangeStart + i}
-                {card.name}
-              </summary>
+              <col span="1" />
 
-              <dl class="my-4">
-                {#each Object.entries(card) as entry}
-                  <dt class="mb-1 mt-4 font-bold">{entry[0]}</dt>
-                  <dd><pre>{JSON.stringify(entry[1])}</pre></dd>
+              {#each Object.entries(cardsData[0]) as entry}
+                {@const isObject = typeof entry[1] === "object" ? true : false}
+                {@const isArray = Array.isArray(entry[1])}
+                {@const hasLayer2 = isObject && !isArray ? true : false}
+                {@const entriesLayer2 = Object.entries(entry[1])}
+
+                {#if !hasLayer2}
+                  <col span="1" />
+                {:else}
+                  <colgroup span={entriesLayer2.length}></colgroup>
+                {/if}
+              {/each}
+
+              <thead>
+                <tr
+                  id="table-headings-layer-1"
+                  class="border bg-gray-300"
+                >
+                  <th
+                    scope="col"
+                    class="border px-2">no.</th
+                  >
+
+                  {#each Object.entries(cardsData[0]) as entry}
+                    {@const isObject = typeof entry[1] === "object" ? true : false}
+                    {@const isArray = Array.isArray(entry[1])}
+                    {@const hasLayer2 = isObject && !isArray ? true : false}
+                    {@const entriesLayer2 = Object.entries(entry[1])}
+
+                    <th
+                      colspan={hasLayer2 ? entriesLayer2.length : 1}
+                      scope={hasLayer2 ? "colgroup" : "col"}
+                      class="border px-2"
+                    >
+                      {entry[0]}
+                    </th>
+                  {/each}
+                </tr>
+
+                <tr
+                  id="table-headings-layer-2"
+                  class="border bg-gray-300"
+                >
+                  <td class="border px-2"></td>
+
+                  {#each Object.entries(cardsData[0]) as entry}
+                    {@const isObject = typeof entry[1] === "object" ? true : false}
+                    {@const isArray = Array.isArray(entry[1])}
+                    {@const hasLayer2 = isObject && !isArray ? true : false}
+                    {@const entriesLayer2 = Object.entries(entry[1])}
+
+                    {#if !hasLayer2}
+                      <th scope="col"></th>
+                    {:else}
+                      {#each entriesLayer2 as entryLayer2}
+                        <th
+                          scope="col"
+                          class="border px-2">{entryLayer2[0]}</th
+                        >
+                      {/each}
+                    {/if}
+                  {/each}
+                </tr>
+              </thead>
+
+              <tbody>
+                {#each cardsData as card, i}
+                  {@const hasRemainder = i % 2 ? true : false}
+
+                  <tr class:bg-gray-300={hasRemainder}>
+                    <th scope="row">{rangeStart + i}</th>
+
+                    {#each Object.entries(cardsData[0]) as entry}
+                      {@const value = card[entry[0]] ?? "-"}
+                      {@const isObject = typeof entry[1] === "object" ? true : false}
+
+                      {#if Array.isArray(value)}
+                        <td class="border px-2">
+                          {#if value.length === 0}
+                            -
+                          {:else}
+                            {#each value as text, i}
+                              {text}{i >= 0 && i < value.length - 1 ? ", " : ""}
+                            {/each}
+                          {/if}
+                        </td>
+                      {:else if isObject}
+                        {#each Object.keys(entry[1]) as key}
+                          <td class="border px-2">
+                            {value?.[key] ?? "-"}
+                          </td>
+                        {/each}
+                      {:else}
+                        <td class="border px-2">
+                          {value}
+                        </td>
+                      {/if}
+                    {/each}
+                  </tr>
                 {/each}
-              </dl>
-            </details>
-          {/each}
+              </tbody>
+            </table>
+          </div>
         {/if}
       </section>
     {/if}
