@@ -57,7 +57,7 @@ enum LegalityStatus {
   "restricted",
   "banned",
 }
-interface Legalities {
+export interface Legalities {
   standard: LegalityStatus;
   future: LegalityStatus;
   historic: LegalityStatus;

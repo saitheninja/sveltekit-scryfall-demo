@@ -10,7 +10,7 @@
 
   import { Colors } from "$lib/interfaces";
 
-  import type { ChartEntry, Card } from "$lib/interfaces";
+  import type { ChartEntry, Card, Legalities } from "$lib/interfaces";
 
   const rangeMin = 1;
   const rangeMax = 1000;
@@ -22,6 +22,20 @@
 
   let cardEmojis: string[] = [];
   let cardsData: Card[] = [];
+  let tableData: {
+    name: string;
+    cmc: number;
+    mana_cost: string;
+    color_identity: Colors[];
+    power: string;
+    toughness: string;
+    type_line: string;
+    keywords: string[];
+    oracle_text: string;
+    produced_mana: Colors[];
+    legalities: Legalities;
+    scryfall_uri: URL;
+  }[] = [];
 
   async function fetchCardRange(start: number, end: number) {
     $isLoading = "true";
@@ -148,6 +162,48 @@
     });
 
     return pieChartData;
+  }
+
+  function makeTableData(cards: Card[]) {
+    $isLoading = "true";
+
+    tableData = [];
+
+    cards.forEach(
+      ({
+        scryfall_uri,
+        cmc,
+        color_identity,
+        keywords = [],
+        legalities,
+        mana_cost = "-",
+        name,
+        oracle_text = "-",
+        power = "-",
+        produced_mana = [],
+        toughness = "-",
+        type_line = "-",
+      }) => {
+        tableData.push({
+          name,
+          cmc,
+          mana_cost,
+          color_identity,
+          power,
+          toughness,
+          type_line,
+          keywords,
+          oracle_text,
+          produced_mana,
+          legalities,
+          scryfall_uri,
+        });
+      },
+    );
+
+    console.log(tableData);
+
+    $isLoading = "";
   }
 
   $: range = rangeEnd - rangeStart + 1;
@@ -335,6 +391,7 @@
           <form
             on:submit|preventDefault={() => {
               showDetailedData = true;
+              makeTableData(cardsData);
             }}
             class="mx-auto max-w-max"
           >
@@ -345,12 +402,12 @@
           </form>
         {:else}
           <div class="mx-auto w-full overflow-auto">
-            <table class="mx-auto w-full overflow-auto whitespace-pre">
-              <caption class="mb-1 text-left">Full detailed card data.</caption>
+            <table class="whitespace-pre">
+              <!-- <caption class="text-minor mb-1 text-left">Table 1: Detailed card data.</caption> -->
 
               <col span="1" />
 
-              {#each Object.entries(cardsData[0]) as entry}
+              {#each Object.entries(tableData[0]) as entry}
                 {@const isObject = typeof entry[1] === "object" ? true : false}
                 {@const isArray = Array.isArray(entry[1])}
                 {@const hasLayer2 = isObject && !isArray ? true : false}
@@ -366,14 +423,14 @@
               <thead>
                 <tr
                   id="table-headings-layer-1"
-                  class="border bg-gray-300"
+                  class="border bg-gray-300 text-left"
                 >
                   <th
                     scope="col"
                     class="border px-2">no.</th
                   >
 
-                  {#each Object.entries(cardsData[0]) as entry}
+                  {#each Object.entries(tableData[0]) as entry}
                     {@const isObject = typeof entry[1] === "object" ? true : false}
                     {@const isArray = Array.isArray(entry[1])}
                     {@const hasLayer2 = isObject && !isArray ? true : false}
@@ -395,7 +452,7 @@
                 >
                   <td class="border px-2"></td>
 
-                  {#each Object.entries(cardsData[0]) as entry}
+                  {#each Object.entries(tableData[0]) as entry}
                     {@const isObject = typeof entry[1] === "object" ? true : false}
                     {@const isArray = Array.isArray(entry[1])}
                     {@const hasLayer2 = isObject && !isArray ? true : false}
@@ -416,27 +473,26 @@
               </thead>
 
               <tbody>
-                {#each cardsData as card, i}
+                {#each tableData as card, i}
                   {@const hasRemainder = i % 2 ? true : false}
 
                   <tr class:bg-gray-300={hasRemainder}>
                     <th scope="row">{rangeStart + i}</th>
 
-                    {#each Object.entries(cardsData[0]) as entry}
-                      {@const value = card[entry[0]] ?? "-"}
-                      {@const isObject = typeof entry[1] === "object" ? true : false}
+                    {#each Object.entries(tableData[0]) as entry}
+                      {@const value = card[entry[0]]}
 
                       {#if Array.isArray(value)}
                         <td class="border px-2">
                           {#if value.length === 0}
-                            -
+                            {"-"}
                           {:else}
                             {#each value as text, i}
                               {text}{i >= 0 && i < value.length - 1 ? ", " : ""}
                             {/each}
                           {/if}
                         </td>
-                      {:else if isObject}
+                      {:else if typeof entry[1] === "object"}
                         {#each Object.keys(entry[1]) as key}
                           <td class="border px-2">
                             {value?.[key] ?? "-"}
