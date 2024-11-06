@@ -113,7 +113,8 @@
 /* text */
 @layer components {
   .heading-style-1 {
-    @apply mx-auto text-4xl font-bold md:text-6xl;
+    @apply text-4xl font-bold md:text-6xl;
+    @apply mx-auto w-full max-w-prose;
   }
 
   .heading-style-2 {
