@@ -61,13 +61,11 @@
         class="h-6 w-6 fill-current"
         viewBox="0 0 24 24"
       >
-        {#if !dialog?.open}
-          <path
-            fill-rule="evenodd"
-            stroke-linecap="round"
-            d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
-          />
-        {/if}
+        <path
+          fill-rule="evenodd"
+          stroke-linecap="round"
+          d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
+        />
       </svg>
     </button>
   </form>
@@ -80,13 +78,13 @@
 >
   <div class="flex flex-row items-center justify-between">
     <a
-      class="mb-2 text-xl font-extrabold"
+      class="mb-1 text-lg font-extrabold"
       href="/">Scryfall Data Demo</a
     >
 
     <form
       method="dialog"
-      class="mr-4 max-h-max max-w-max rounded-lg"
+      class="mr-2 max-w-max rounded-lg"
     >
       <!-- svelte-ignore a11y-autofocus -->
       <button autofocus>
@@ -109,16 +107,31 @@
   <nav class="mt-4">
     <ul class="mb-4 flex h-full flex-col gap-4">
       <li aria-current={$page.url.pathname === "/" ? "page" : undefined}>
-        <a href="/">Home</a>
+        <a
+          href="/"
+          on:click={() => {
+            dialog.close();
+          }}>Home</a
+        >
       </li>
 
       <li aria-current={$page.url.pathname.startsWith("/scryfall") ? "page" : undefined}>
-        <a href="/scryfall">Scryfall</a>
+        <a
+          href="/scryfall"
+          on:click={() => {
+            dialog.close();
+          }}>Scryfall</a
+        >
       </li>
 
       {#if !$jwt}
         <li aria-current={$page.url.pathname.startsWith("/log-in") ? "page" : undefined}>
-          <a href="/log-in">Log In</a>
+          <a
+            href="/log-in"
+            on:click={() => {
+              dialog.close();
+            }}>Log In</a
+          >
         </li>
       {/if}
     </ul>
