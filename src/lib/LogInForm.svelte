@@ -14,7 +14,7 @@
         $email = result.data?.email?.toString() ?? "";
         $jwt = result.data?.jwt?.toString() ?? "";
 
-        alert("Login successful. Redirecting to Scryfall data page.");
+        // alert("Login successful. Redirecting to Scryfall data page.");
         await goto("/scryfall");
       } else {
         await update();
