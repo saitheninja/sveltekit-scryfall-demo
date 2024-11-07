@@ -16,7 +16,7 @@
 
 <h1 class="heading-style-1">Log In</h1>
 
-<section class="mx-auto my-auto h-full w-full max-w-xs">
+<section class="mx-auto my-auto w-full max-w-xs pb-20">
   {#if $jwt !== "loggedin"}
     <LogInForm {form} />
   {:else}
@@ -25,7 +25,7 @@
       <p class="text-minor">as {$email}</p>
     </hgroup>
 
-    <p class="mb-4">
+    <p class="mb-4 text-center">
       You can now access the <a href="/scryfall">Scryfall data page</a>.
     </p>
   {/if}

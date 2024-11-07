@@ -218,19 +218,19 @@
   />
 </svelte:head>
 
-<h1 class="heading-style-1 mb-6">Scryfall Data</h1>
+<h1 class="heading-style-1">Scryfall Data</h1>
 
 {#if $jwt !== "loggedin"}
-  <div class="mx-auto w-full max-w-sm">
-    <h2 class="heading-style-2 mb-1">Not Logged In</h2>
+  <div class="mx-auto w-full max-w-sm text-center">
+    <h2 class="heading-style-2 mb-4">Not Logged In</h2>
 
-    <p>Go to the <a href="/">log in page</a>.</p>
+    <p>Go to the <a href="/log-in">log in page</a>.</p>
   </div>
 {:else}
-  <div class="grid grid-cols-1 justify-center gap-8">
+  <div class="grid grid-cols-1 justify-center gap-12">
     <section
       id="fetch-cards"
-      class="mx-auto w-full max-w-prose"
+      class="mx-auto w-full max-w-md"
     >
       <hgroup
         id="heading-fetch-cards"
@@ -344,14 +344,14 @@
       >
         <section
           id="color-identity-chart"
-          class="mx-auto w-full max-w-prose"
+          class="mx-auto h-full w-full max-w-prose"
         >
-          <hgroup class="mb-6 text-center">
+          <hgroup class="mb-4 text-center">
             <h2 class="heading-style-2">Color Identity Tally</h2>
             <p class="text-minor">One card can have multiple colors</p>
           </hgroup>
 
-          <div class="mx-auto w-full max-w-max pt-8">
+          <div class="mx-auto max-w-max pt-2 md:pt-4">
             <ChartPies data={pieChartData} />
           </div>
         </section>
@@ -365,9 +365,9 @@
             <p class="text-minor">One card has one converted mana cost</p>
           </hgroup>
 
-          {#if barChartData.length}
+          <div class="mx-auto mt-auto max-w-max">
             <ChartBars data={barChartData} />
-          {/if}
+          </div>
         </section>
       </div>
 

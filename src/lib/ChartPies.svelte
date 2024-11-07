@@ -8,8 +8,8 @@
   export let data: ChartEntry[] = [];
 
   // chart dimensions
-  const width = 400;
-  const height = Math.min(width, 400);
+  const width = 450;
+  const height = Math.min(width, 450);
   const radius = Math.min(width, height) / 2;
   const innerRadius = radius * 0.5;
   const outerRadius = radius - 1;

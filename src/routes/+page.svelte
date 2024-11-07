@@ -12,8 +12,8 @@
 
 <h1 class="heading-style-1">Welcome</h1>
 
-<section class="mx-auto my-auto h-full w-full max-w-prose">
-  <hgroup class="mb-4 text-center">
+<section class="mx-auto max-w-prose">
+  <hgroup class="mb-4">
     <h2 class="heading-style-2">About</h2>
     <!-- <p class="text-minor"></p> -->
   </hgroup>

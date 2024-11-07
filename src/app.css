@@ -1,36 +1,14 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-@import "@fontsource/fira-mono";
 
-/* default styles */
+/* root styling */
 @layer base {
   :root {
-    @apply text-gray-900;
-    @apply scroll-smooth;
-    @apply scroll-pt-20;
-
-    --font-mono: "Fira Mono", monospace;
-  }
-
-  body {
-    @apply bg-fixed;
-    @apply bg-gray-100;
-    @apply bg-[url("noise.svg")] bg-blend-overlay;
-    @apply accent-teal-300;
-  }
-
-  pre {
-    @apply overflow-x-auto;
-    @apply px-2 pb-1 pt-2;
-    @apply rounded-sm;
-    @apply shadow-inner;
-    @apply bg-gray-200;
-  }
-
-  a {
-    @apply underline;
-    @apply hover:text-gray-700;
+    @apply scroll-pt-20 scroll-smooth;
+    @apply text-gray-800;
+    @apply bg-gray-50 bg-[url("noise.svg")] bg-fixed bg-blend-overlay;
+    @apply caret-teal-300 accent-teal-300;
   }
 }
 
@@ -64,15 +42,18 @@
   }
 
   button:active {
-    @apply bg-teal-100;
+    @apply bg-green-300;
     @apply text-black;
-    @apply shadow-inner;
+    @apply shadow-inner shadow-gray-900;
+    @apply outline outline-green-300;
+    @apply cursor-wait;
   }
 
   button:disabled {
     @apply bg-gray-400 hover:bg-gray-400;
     @apply text-gray-300;
     @apply shadow-gray-500;
+    @apply cursor-wait;
   }
 
   input {
@@ -112,9 +93,14 @@
 
 /* text */
 @layer components {
+  a {
+    @apply underline;
+    @apply hover:text-gray-950;
+  }
+
   .heading-style-1 {
     @apply text-4xl font-bold md:text-6xl;
-    @apply mx-auto w-full max-w-prose;
+    @apply mb-12;
   }
 
   .heading-style-2 {

@@ -24,10 +24,7 @@
 
   <footer class="flex flex-col items-center p-2 text-sm italic">
     <p>
-      This is a footer. <a
-        href="#top"
-        class="underline hover:text-gray-100">Go to top ↑</a
-      >
+      This is a footer. <a href="#top">Go to top ↑</a>
     </p>
   </footer>
 </div>

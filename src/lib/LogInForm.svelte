@@ -30,7 +30,7 @@
         id="heading-log-in"
         class="heading-style-2 mb-1"
       >
-        Log in to view data demo
+        Log in to view data
       </h2>
 
       <p class="text-minor">"test@example.com"</p>
@@ -81,9 +81,9 @@
   {/if}
 
   {#if form?.message}
-    <hr class="mb-4 mt-2" />
+    <hr class="mb-4 mt-6" />
 
-    <div class="pb-2 italic text-red-500">
+    <div class="pb-2 text-center italic text-red-500">
       <h3 class="heading-style-3">Error</h3>
 
       <p>{form.message}</p>
