@@ -201,8 +201,6 @@
       },
     );
 
-    console.log(tableData);
-
     $isLoading = "";
   }
 
@@ -373,7 +371,10 @@
         </section>
       </div>
 
-      <section id="detailed-data">
+      <section
+        id="detailed-data"
+        class="mb-8"
+      >
         <hgroup class="mb-4 text-center">
           <h2 class="heading-style-2">Detailed Card Data</h2>
           <p class="text-minor">
@@ -401,33 +402,19 @@
             >
           </form>
         {:else}
-          <div class="mx-auto w-full overflow-auto">
+          <div class="mx-auto max-w-max overflow-x-auto border border-gray-200">
             <table class="whitespace-pre">
               <!-- <caption class="text-minor mb-1 text-left">Table 1: Detailed card data.</caption> -->
-
-              <col span="1" />
-
-              {#each Object.entries(tableData[0]) as entry}
-                {@const isObject = typeof entry[1] === "object" ? true : false}
-                {@const isArray = Array.isArray(entry[1])}
-                {@const hasLayer2 = isObject && !isArray ? true : false}
-                {@const entriesLayer2 = Object.entries(entry[1])}
-
-                {#if !hasLayer2}
-                  <col span="1" />
-                {:else}
-                  <colgroup span={entriesLayer2.length}></colgroup>
-                {/if}
-              {/each}
 
               <thead>
                 <tr
                   id="table-headings-layer-1"
-                  class="border bg-gray-300 text-left"
+                  class="bg-gray-200 text-left"
                 >
                   <th
+                    rowspan="2"
                     scope="col"
-                    class="border px-2">no.</th
+                    class="px-2">no.</th
                   >
 
                   {#each Object.entries(tableData[0]) as entry}
@@ -437,9 +424,10 @@
                     {@const entriesLayer2 = Object.entries(entry[1])}
 
                     <th
+                      rowspan={hasLayer2 ? 1 : 2}
                       colspan={hasLayer2 ? entriesLayer2.length : 1}
                       scope={hasLayer2 ? "colgroup" : "col"}
-                      class="border px-2"
+                      class="px-2"
                     >
                       {entry[0]}
                     </th>
@@ -448,23 +436,19 @@
 
                 <tr
                   id="table-headings-layer-2"
-                  class="border bg-gray-300"
+                  class="bg-gray-200"
                 >
-                  <td class="border px-2"></td>
-
                   {#each Object.entries(tableData[0]) as entry}
                     {@const isObject = typeof entry[1] === "object" ? true : false}
                     {@const isArray = Array.isArray(entry[1])}
                     {@const hasLayer2 = isObject && !isArray ? true : false}
                     {@const entriesLayer2 = Object.entries(entry[1])}
 
-                    {#if !hasLayer2}
-                      <th scope="col"></th>
-                    {:else}
+                    {#if hasLayer2}
                       {#each entriesLayer2 as entryLayer2}
                         <th
                           scope="col"
-                          class="border px-2">{entryLayer2[0]}</th
+                          class="px-2">{entryLayer2[0]}</th
                         >
                       {/each}
                     {/if}
@@ -476,8 +460,11 @@
                 {#each tableData as card, i}
                   {@const hasRemainder = i % 2 ? true : false}
 
-                  <tr class:bg-gray-300={hasRemainder}>
-                    <th scope="row">{rangeStart + i}</th>
+                  <tr class:bg-gray-200={hasRemainder}>
+                    <th
+                      scope="row"
+                      class="border">{rangeStart + i}</th
+                    >
 
                     {#each Object.entries(tableData[0]) as entry}
                       {@const value = card[entry[0]]}
