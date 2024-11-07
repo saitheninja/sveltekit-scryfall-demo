@@ -8,7 +8,7 @@
 </script>
 
 <header
-  class="sticky top-0 z-10 mb-4 flex h-16 w-full flex-row border-b border-b-gray-300 bg-gray-100 px-2"
+  class="sticky top-0 z-10 mb-4 flex h-16 w-full flex-row border-b border-b-gray-300 bg-gray-50 px-2"
 >
   <a
     class="skip-to-main-content"
@@ -74,7 +74,7 @@
 <dialog
   bind:this={dialog}
   id="mobile-nav-dialog"
-  class="min-w-48 rounded-lg border border-gray-400 bg-gray-100 px-2 py-4"
+  class="min-w-48 rounded-lg border border-gray-400 bg-gray-50 px-2 py-4"
 >
   <div class="flex flex-row items-center justify-between">
     <a
