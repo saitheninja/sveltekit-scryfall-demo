@@ -393,6 +393,7 @@
             on:submit|preventDefault={() => {
               showDetailedData = true;
               makeTableData(cardsData);
+              goto("#table-detailed-data");
             }}
             class="mx-auto max-w-max"
           >
@@ -403,7 +404,7 @@
           </form>
         {:else}
           <div class="mx-auto max-w-max overflow-x-auto border border-gray-200">
-            <table class="whitespace-pre">
+            <table id="table-detailed-data" class="whitespace-pre">
               <!-- <caption class="text-minor mb-1 text-left">Table 1: Detailed card data.</caption> -->
 
               <thead>
